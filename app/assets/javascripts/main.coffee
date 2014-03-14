@@ -24,7 +24,7 @@ $ ->
       (D.div { className: 'posts' }, @props.data.map(renderPost))
 
   Wrap = React.createClass
-    # callbacks
+    # our callbacks
     dataReceived: (data) ->
       @setState {
         loading: false,
@@ -33,7 +33,11 @@ $ ->
         posts: data.posts
       }
 
-    # event handlers
+    # our event handlers
+    firstPage: (e) ->
+      e.preventDefault
+      $.getJSON(@props.source + '?page=1', @dataReceived)
+
     prevPage: (e) ->
       e.preventDefault
       page = @state.current_page - 1
@@ -45,6 +49,11 @@ $ ->
       page = @state.current_page + 1
       return if page > @state.total_pages
       $.getJSON(@props.source + '?page=' + page, @dataReceived)
+
+    lastPage: (e) ->
+      e.preventDefault
+      $.getJSON(@props.source + '?page=' + @state.total_pages, @dataReceived)
+
 
     # react stuff
     getInitialState: ->
@@ -61,13 +70,17 @@ $ ->
       (D.div {}, [
         (D.h1 {}, "Posts - #{@state.current_page} of #{@state.total_pages}"),
         (D.p { className: 'pagination' }, [
+          (D.a { onClick: @firstPage, href: '#' }, 'First'),
           (D.a { onClick: @prevPage, href: '#' }, 'Prev'),
           (D.a { onClick: @nextPage, href: '#' }, 'Next'),
+          (D.a { onClick: @lastPage, href: '#' }, 'Last'),
         ])
         (Posts { data: @state.posts }),
         (D.p { className: 'pagination' }, [
+          (D.a { onClick: @firstPage, href: '#' }, 'First'),
           (D.a { onClick: @prevPage, href: '#' }, 'Prev'),
           (D.a { onClick: @nextPage, href: '#' }, 'Next'),
+          (D.a { onClick: @lastPage, href: '#' }, 'Last'),
         ])
       ])
 
