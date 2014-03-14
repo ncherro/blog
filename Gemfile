@@ -9,6 +9,8 @@ gem 'jquery-rails'
 gem 'jbuilder', '~> 1.2'
 gem 'lorem'
 gem 'slim-rails'
+gem 'kaminari'
+gem 'quiet_assets'
 
 group :doc do
   gem 'sdoc', require: false

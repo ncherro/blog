@@ -52,6 +52,9 @@ GEM
       railties (>= 3.0, < 5.0)
       thor (>= 0.14, < 2.0)
     json (1.8.1)
+    kaminari (0.15.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     lorem (0.1.2)
     mail (2.5.4)
       mime-types (~> 1.16)
@@ -61,6 +64,8 @@ GEM
     multi_json (1.9.0)
     pg (0.17.1)
     polyglot (0.3.4)
+    quiet_assets (1.0.2)
+      railties (>= 3.1, < 5.0)
     rack (1.5.2)
     rack-test (0.6.2)
       rack (>= 1.0)
@@ -147,8 +152,10 @@ DEPENDENCIES
   factory_girl_rails (~> 4.0)
   jbuilder (~> 1.2)
   jquery-rails
+  kaminari
   lorem
   pg
+  quiet_assets
   rails (= 4.0.3)
   rspec-rails (~> 3.0.0.beta)
   sass-rails (~> 4.0.0)
