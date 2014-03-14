@@ -2,12 +2,14 @@ $ ->
 
   D = React.DOM
 
+  converter = new Showdown.converter
+
   Post = React.createClass
     render: ->
       (D.div { className: 'post' }, [
         (D.h3 {}, @props.title),
         (D.p {}, @props.pub_date),
-        (D.p {}, @props.copy),
+        (D.span { dangerouslySetInnerHTML: { __html: converter.makeHtml(@props.copy) }})
       ])
 
   Posts = React.createClass
@@ -44,7 +46,7 @@ $ ->
       return if page > @state.total_pages
       $.getJSON(@props.source + '?page=' + page, @dataReceived)
 
-    # react
+    # react stuff
     getInitialState: ->
       loading: true,
       current_page: 1,
