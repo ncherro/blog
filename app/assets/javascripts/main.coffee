@@ -41,7 +41,7 @@ $ ->
     prevPage: (e) ->
       e.preventDefault
       page = @state.current_page - 1
-      return if page < 0
+      return if page < 1
       $.getJSON(@props.source + '?page=' + page, @dataReceived)
 
     nextPage: (e) ->
