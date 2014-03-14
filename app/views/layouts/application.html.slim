@@ -1,0 +1,11 @@
+doctype 5
+html
+  head
+    title BLorg
+    = stylesheet_link_tag :application
+    = javascript_include_tag :application
+    = csrf_meta_tags
+
+  body
+    section#content
+      = yield
