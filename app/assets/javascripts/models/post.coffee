@@ -8,8 +8,6 @@
       relatedModel: 'Blog.Models.Comment'
     ]
 
-    urlRoot: '/post/'
-
     defaults:
       title: ''
       copy: ''

@@ -61,7 +61,7 @@
     mixins: [Blog.BackboneMixins]
 
     getBackboneCollections: () ->
-      @props.posts
+      [@props.posts]
 
     # react stuff
     getInitialState: ->
@@ -71,7 +71,7 @@
       posts: []
 
     componentWillMount: ->
-      Router = Backbone.Router.extend(
+      Blog.Routers.Posts = Backbone.Router.extend(
         routes:
           '': 'all'
         # all ^ will call this function
@@ -82,11 +82,15 @@
         })
       )
 
-      new Router
+      console.log Blog.Routers.Posts.routes
+
+      new Blog.Routers.Posts
+
       Backbone.history.start
+        pushState: true
 
       # @props.posts is a Backbone collection
-      @props.posts.fetch
+      do @props.posts.fetch
 
     render: ->
       D.div {}, [

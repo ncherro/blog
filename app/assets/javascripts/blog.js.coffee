@@ -22,7 +22,7 @@ window.Blog =
         # React validates that it's a function. `collection` events pass
         # additional arguments that are not functions
         collection.on('add remove change', @forceUpdate.bind(@, null))
-      @getBackboneCollections.forEach(bindCallbacks, @)
+      @getBackboneCollections().forEach(bindCallbacks, @)
 
     componentWillUnmount: () ->
       # clean up references when the component is destroyed
@@ -34,6 +34,6 @@ window.Blog =
 # start it up on document ready
 $ ->
   React.renderComponent(
-    (Blog.Ui.PostsWrap { posts: new Blog.collections.posts }),
+    (Blog.Ui.PostsWrap { posts: new Blog.Collections.Posts }),
     document.getElementById('content')
   )

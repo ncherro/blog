@@ -1,6 +1,6 @@
 (() ->
 
-  Blog.Models.Comment = Backbone.Model.extend
+  Blog.Models.Comment = Backbone.RelationalModel.extend
 
     urlRoot: '/comment/'
 

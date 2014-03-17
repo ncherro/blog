@@ -4,13 +4,12 @@ json.meta do
 end
 json.posts do
   json.array! @posts do |post|
+    json.id post.id
     json.title post.title
     json.url post_path(post, format: :json)
     json.copy post.copy
     json.pub_date post.pub_date
     json.pub_date_local l(post.pub_date)
-    json.has_more_comments (post.comments.count > 3)
-    json.comments_url post_comments_path(post, format: :json)
     json.tags do
       json.array! post.tags do |tag|
         json.name tag.name
@@ -22,5 +21,7 @@ json.posts do
         partial: 'comments/comment',
         as: :comment
     end
+    json.has_more_comments (post.comments.count > 3)
+    json.comments_url post_comments_path(post, format: :json)
   end
 end
