@@ -1,9 +1,15 @@
 (() ->
 
-  Blog.Collections.Posts = Backbone.Collection.extend 
+  Blog.Collections.Posts = Backbone.Collection.extend
+
+    model: Blog.Models.Post
 
     url: '/posts'
 
-    model: Blog.Models.Post
+    loadedAll: false
+
+    parse: (response) ->
+      @loadedAll = response.posts.length == 0
+      response.posts
 
 )()

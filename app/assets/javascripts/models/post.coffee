@@ -8,8 +8,6 @@
       relatedModel: 'Blog.Models.Comment'
     ]
 
-    paramRoot: 'post'
-
     defaults:
       title: null
       copy: null
