@@ -2,7 +2,7 @@
 
   Blog.Collections.Posts = Backbone.Collection.extend 
 
-    url: '/posts.json'
+    url: '/posts'
 
     model: Blog.Models.Post
 

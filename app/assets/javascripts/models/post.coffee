@@ -8,13 +8,11 @@
       relatedModel: 'Blog.Models.Comment'
     ]
 
-    defaults:
-      title: ''
-      copy: ''
-      pub_date: new Date
+    paramRoot: 'post'
 
-    toggle: () ->
-      @save
-        completed: !@get('completed')
+    defaults:
+      title: null
+      copy: null
+      pub_date: null
 
 )()
