@@ -13,17 +13,19 @@ window.Blog =
   Routers: {}
   Ui: {}
   BackboneMixins:
+    # both mixins require getBackboneCollections() to be defined in the React
+    # component
     componentDidMount: () ->
-      # whenever there may be a change in the Backbone data, trigger a reconcile.
+      # re-render whenever there may be a change in the Backbone data -
       bindCallbacks = (collection) ->
         # explicitly bind `null` to `forceUpdate`, as it demands a callback and
-        # React validates that it's a function.
-        # `collection` events passes additional arguments that are not functions
+        # React validates that it's a function. `collection` events pass
+        # additional arguments that are not functions
         collection.on('add remove change', @forceUpdate.bind(@, null))
       @getBackboneCollections.forEach(bindCallbacks, @)
 
     componentWillUnmount: () ->
-      # ensure that we clean up references when the component is destroyed.
+      # clean up references when the component is destroyed
       cleanup = (collection) ->
         collection.off(null, null, this)
       @getBackboneCollections.forEach(cleanup, @)
@@ -32,6 +34,6 @@ window.Blog =
 # start it up on document ready
 $ ->
   React.renderComponent(
-    (Blog.Ui.PostsWrap { source: '/posts.json' }),
+    (Blog.Ui.PostsWrap { posts: new Blog.collections.posts }),
     document.getElementById('content')
   )

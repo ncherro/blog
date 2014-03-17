@@ -26,6 +26,7 @@
 
   Blog.Ui.PostsWrap = React.createClass
     # our callbacks
+    ###
     dataReceived: (data) ->
       @setState {
         loading: false,
@@ -54,7 +55,7 @@
     lastPage: (e) ->
       e.preventDefault
       $.getJSON(@props.source + '?page=' + @state.total_pages, @dataReceived)
-
+    ###
 
     # react-backbone stuff
     mixins: [Blog.BackboneMixins]
@@ -64,39 +65,33 @@
 
     # react stuff
     getInitialState: ->
-      loading: true,
-      current_page: 1,
-      total_pages: 1,
+      loading: true
+      current_page: 1
+      total_pages: 1
       posts: []
 
     componentWillMount: ->
       Router = Backbone.Router.extend(
         routes:
-          ':page': 'all'
-        all: @setState.bind(@, { nowShowing: app.ALL_TODOS})
-        active: @setState.bind(@, { nowShowing: app.ALL_TODOS})
-        completed: @setState.bind(@, { nowShowing: app.ALL_TODOS})
+          '': 'all'
+        # all ^ will call this function
+        all: @setState.bind(@, {
+          loading: false
+          current_page: 1
+          total_pages: 1
+        })
       )
+
       new Router
       Backbone.history.start
+
+      # @props.posts is a Backbone collection
       @props.posts.fetch
 
     render: ->
       D.div {}, [
         D.h1 {}, "Posts - #{@state.current_page} of #{@state.total_pages}"
-        D.p { className: 'pagination' }, [
-          D.a { onClick: @firstPage, href: '#' }, 'First'
-          D.a { onClick: @prevPage, href: '#' }, 'Prev'
-          D.a { onClick: @nextPage, href: '#' }, 'Next'
-          D.a { onClick: @lastPage, href: '#' }, 'Last'
-        ]
         Blog.Ui.Posts { data: @state.posts }
-        D.p { className: 'pagination' }, [
-          D.a { onClick: @firstPage, href: '#' }, 'First'
-          D.a { onClick: @prevPage, href: '#' }, 'Prev'
-          D.a { onClick: @nextPage, href: '#' }, 'Next'
-          D.a { onClick: @lastPage, href: '#' }, 'Last'
-        ]
       ]
 
 )()
