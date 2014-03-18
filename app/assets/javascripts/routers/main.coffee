@@ -9,6 +9,7 @@
       "posts"          : "posts_index"
 
     posts_index: ->
+      # render our UI component, passing in a collection
       React.renderComponent(
         (Blog.Ui.PostsWrap { posts: new Blog.Collections.Posts() }),
         document.getElementById('content')

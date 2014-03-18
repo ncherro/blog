@@ -3,24 +3,23 @@
 #= require ui/posts
 #= require_tree ./models
 #= require_tree ./collections
-#= require_tree ./routers
 
 
 window.Blog =
   Models: {}
   Collections: {}
-  Routers: {}
   Ui: {}
   BackboneMixins:
-    # both mixins require getBackboneCollections() to be defined in the React
-    # component
+    # getBackboneCollections() should return a collection
     componentDidMount: () ->
+
+      console.log 'Blog.BackboneMixins.componentDidMount'
+
       # re-render whenever there may be a change in the Backbone data -
       bindCallbacks = (collection) ->
         # explicitly bind `null` to `forceUpdate`, as it demands a callback and
         # React validates that it's a function. `collection` events pass
         # additional arguments that are not functions
-        console.log 'bindCallbacks', @, collection.length
         collection.on('add remove change', @forceUpdate.bind(@, null))
       @getBackboneCollections().forEach(bindCallbacks, @)
 
@@ -34,5 +33,7 @@ window.Blog =
 
 
 $ ->
-  new Blog.Routers.Main()
-  Backbone.history.start()
+  React.renderComponent(
+    (Blog.Ui.PostsWrap { posts: new Blog.Collections.Posts() }),
+    document.getElementById('content')
+  )
