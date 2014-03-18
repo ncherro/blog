@@ -4,33 +4,61 @@
 
   # Posts
   Blog.Ui.Post = React.createClass
+
+    getInitialState: ->
+      loading: false
+
+    componentWillMount: ->
+
+      if typeof @props.post == 'undefined'
+
+        # we are coming directly from backbone - look it up...
+        @setState
+          loading: true
+
+        success = (collection, response, options) ->
+          @setProps
+            post: collection.at(0)
+          @setState
+            loading: false
+
+        @props.model.fetch
+          success: success.bind(@)
+
     render: ->
-      # NOTE: @props.post is a Backbone model, use it accordingly
-      D.div { className: 'post' }, [
-        D.h3 {}, @props.post.get('title')
-        D.p {}, @props.post.get('pub_date_local')
-        D.div { dangerouslySetInnerHTML: { __html: converter.makeHtml(@props.post.get('copy')) }}
-        Blog.Ui.CommentsWrap
-          comments: @props.post.get('comments'),
-          has_more_comments: @props.post.get('has_more_comments'),
-          comments_url: @props.post.get('comments_url'),
-          source: false,
-        D.hr {}
-      ]
+      if @state.loading
+        Blog.Ui.Loading()
+      else
+        # NOTE: @props.post is a Backbone model, use it accordingly
+        D.div { className: 'post' }, [
+          D.h3 {}, @props.post.get('title')
+          D.p {}, @props.post.get('pub_date_local')
+          D.div { dangerouslySetInnerHTML: { __html: converter.makeHtml(@props.post.get('copy')) }}
+          Blog.Ui.CommentsWrap
+            comments: @props.post.get('comments'),
+            has_more_comments: @props.post.get('has_more_comments'),
+            comments_url: @props.post.get('comments_url'),
+            source: false,
+          D.hr {}
+        ]
+
 
   Blog.Ui.Posts = React.createClass
     # loop through and render posts
     render: ->
+
       renderPost = (post) ->
         Blog.Ui.Post { post: post }
-      D.div { className: 'posts' }, @props.data.map(renderPost)
+
+      D.div { className: 'posts' }, @props.collection.map(renderPost)
+
 
   Blog.Ui.PostsWrap = React.createClass
     # react-backbone
     mixins: [Blog.BackboneMixins]
 
     getBackboneCollections: ->
-      [@props.posts]
+      [@props.collection]
 
     # event handlers
     nextPage: (e) ->
@@ -52,7 +80,7 @@
       @setState
         loading: true
 
-      @props.posts.fetch
+      @props.collection.fetch
         remove: false # ensure things are only added
         data: { page: p },
         success: success.bind(@)
@@ -64,7 +92,7 @@
       total_pages: 1
       current_count: 1
       total_count: 1
-      posts: []
+      collection: []
 
     componentDidMount: ->
       @loadMore()
@@ -72,7 +100,7 @@
     render: ->
       D.div {}, [
         D.h1 {}, "Showing 1 - #{@state.current_count} of #{@state.total_count} Posts"
-        Blog.Ui.Posts { data: @props.posts }
+        Blog.Ui.Posts { collection: @props.collection }
         if @state.loading
           Blog.Ui.Loading()
         else if @state.current_page != @state.total_pages

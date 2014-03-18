@@ -7,4 +7,11 @@ class PostsController < ApplicationController
     end
   end
 
+  def show
+    @post = Post.find(params[:id])
+    respond_to do |format|
+      format.json
+    end
+  end
+
 end
