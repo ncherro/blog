@@ -1,6 +1,6 @@
 (() ->
 
-  Blog.Models.Post = Backbone.RelationalModel.extend
+  Blog.Models.Post = Backbone.Model.extend
 
     urlRoot: '/posts'
 

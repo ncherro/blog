@@ -6,7 +6,6 @@
 #= require_tree ./collections
 #= require_tree ./routers
 
-
 window.Blog =
   Models: {}
   Collections: {}

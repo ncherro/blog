@@ -8,17 +8,20 @@
     getInitialState: ->
       loading: false
 
+    componentDidMount: ->
+      changed = () ->
+        @forceUpdate()
+      @props.model.on 'change', changed.bind(@)
+
     componentWillMount: ->
-
       if typeof @props.post == 'undefined'
-
         # we are coming directly from backbone - look it up...
         @setState
           loading: true
 
-        success = (collection, response, options) ->
+        success = (model, response, options) ->
           @setProps
-            post: collection.at(0)
+            post: model
           @setState
             loading: false
 
@@ -29,9 +32,15 @@
       if @state.loading
         Blog.Ui.Loading()
       else
-        # NOTE: @props.post is a Backbone model, use it accordingly
+        # @props.post is a Backbone model
         D.div { className: 'post' }, [
-          D.h3 {}, @props.post.get('title')
+          D.h3 {}, [
+            D.a { href: @props.post.get('url'), onClick: (e) ->
+              e.preventDefault()
+              router = new Blog.Routers.Main
+              router.navigate('posts/1', true)
+            }, @props.post.get('title')
+          ]
           D.p {}, @props.post.get('pub_date_local')
           D.div { dangerouslySetInnerHTML: { __html: converter.makeHtml(@props.post.get('copy')) }}
           Blog.Ui.CommentsWrap
