@@ -19,50 +19,63 @@
       ]
 
   Blog.Ui.Posts = React.createClass
+    # loop through and render posts
     render: ->
       renderPost = (post) ->
         Blog.Ui.Post { post: post }
-      (D.div { className: 'posts' }, @props.data.map(renderPost))
+      D.div { className: 'posts' }, @props.data.map(renderPost)
 
   Blog.Ui.PostsWrap = React.createClass
     # react-backbone
     mixins: [Blog.BackboneMixins]
 
-    getBackboneCollections: () ->
+    getBackboneCollections: ->
       [@props.posts]
+
+    # event handlers
+    nextPage: (e) ->
+      e.preventDefault()
+      @loadMore(@state.current_page + 1)
 
     # react
     getInitialState: ->
       loading: true
       current_page: 1
       total_pages: 1
+      current_count: 1
+      total_count: 1
       posts: []
 
     componentDidMount: ->
-      Router = Backbone.Router.extend
-        routes:
-          '': 'all'
-        all: @setState.bind(@, { loading: true })
+      @loadMore()
 
-      new Router()
-      Backbone.history.start()
+    loadMore: (p) ->
+      success = (collection, response, options) ->
+        @setState
+          loading: false
+          current_page: collection.current_page
+          total_pages: collection.total_pages
+          current_count: collection.length
+          total_count: collection.total_count
 
-      # TODO: delete this - just gives us a way to test binding
-      window.c = @props.posts
+      p = p || @state.current_page
 
-      @props.posts.fetch(
-        data: { page: @state.current_page }
-      )
+      @setState
+        loading: true
+
+      @props.posts.fetch
+        remove: false # ensure things are only added
+        data: { page: p },
+        success: success.bind(@)
 
     render: ->
-
-      console.log('Blog.Ui.PostsWrap.render')
-
-      # NOTE: this gets hit after the posts are loaded
-
       D.div {}, [
-        D.h1 {}, "Posts - #{@state.current_page} of #{@state.total_pages}"
+        D.h1 {}, "Showing 1 - #{@state.current_count} of #{@state.total_count} Posts"
         Blog.Ui.Posts { data: @props.posts }
+        if @state.loading
+          Blog.Ui.Loading()
+        else if @state.current_page != @state.total_pages
+          D.a {href: '#', onClick: @nextPage}, "Load more"
       ]
 
 )()

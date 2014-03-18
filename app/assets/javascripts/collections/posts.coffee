@@ -6,10 +6,14 @@
 
     url: '/posts'
 
-    loadedAll: false
+    current_page: 1,
+    total_pages: 1,
+    total_count: 1,
 
     parse: (response) ->
-      @loadedAll = response.posts.length == 0
+      @current_page = response.meta.current_page
+      @total_pages = response.meta.total_pages
+      @total_count = response.meta.total_count
       response.posts
 
 )()
