@@ -37,18 +37,7 @@
       e.preventDefault()
       @loadMore(@state.current_page + 1)
 
-    # react
-    getInitialState: ->
-      loading: true
-      current_page: 1
-      total_pages: 1
-      current_count: 1
-      total_count: 1
-      posts: []
-
-    componentDidMount: ->
-      @loadMore()
-
+    # custom methods
     loadMore: (p) ->
       success = (collection, response, options) ->
         @setState
@@ -67,6 +56,18 @@
         remove: false # ensure things are only added
         data: { page: p },
         success: success.bind(@)
+
+    # react
+    getInitialState: ->
+      loading: true
+      current_page: 1
+      total_pages: 1
+      current_count: 1
+      total_count: 1
+      posts: []
+
+    componentDidMount: ->
+      @loadMore()
 
     render: ->
       D.div {}, [
