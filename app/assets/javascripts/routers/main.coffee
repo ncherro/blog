@@ -6,7 +6,7 @@
       "posts/new"      : "posts_new"
       "posts/:id/edit" : "posts_edit"
       "posts/:id"      : "posts_show"
-      "posts"          : "posts_index"
+      ""               : "posts_index"
 
     # actions
     posts_index: ->
