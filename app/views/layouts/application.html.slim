@@ -6,8 +6,14 @@ html
     = csrf_meta_tags
 
   body
+    header
+      h1
+        | Hey there I am the header
     section#content
       = yield
+    footer
+      p
+        | Hey there I am the footer
 
   = javascript_include_tag :application
   = yield :additional_js

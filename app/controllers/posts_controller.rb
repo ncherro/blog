@@ -18,7 +18,7 @@ class PostsController < ApplicationController
 
   private
   def delay
-    sleep 1
+    sleep 0.3
   end
 
 end
