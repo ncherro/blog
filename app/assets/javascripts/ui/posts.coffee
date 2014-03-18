@@ -39,17 +39,16 @@
       posts: []
 
     componentDidMount: ->
-
-      console.log 'Blog.Ui.PostsWrap.componentDidMount'
-
       Router = Backbone.Router.extend
         routes:
           '': 'all'
         all: @setState.bind(@, { loading: true })
 
       new Router()
-
       Backbone.history.start()
+
+      # TODO: delete this - just gives us a way to test binding
+      window.c = @props.posts
 
       @props.posts.fetch(
         data: { page: @state.current_page }
