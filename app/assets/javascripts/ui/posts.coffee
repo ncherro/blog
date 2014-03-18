@@ -8,11 +8,6 @@
     getInitialState: ->
       loading: false
 
-    componentDidMount: ->
-      changed = () ->
-        @forceUpdate()
-      @props.model.on 'change', changed.bind(@)
-
     componentWillMount: ->
       if typeof @props.post == 'undefined'
         # we are coming directly from backbone - look it up...
@@ -37,8 +32,7 @@
           D.h3 {}, [
             D.a { href: @props.post.get('url'), onClick: (e) ->
               e.preventDefault()
-              router = new Blog.Routers.Main
-              router.navigate('posts/1', true)
+              new Blog.Routers.Main().navigate($(e.target).attr('href'), true)
             }, @props.post.get('title')
           ]
           D.p {}, @props.post.get('pub_date_local')
