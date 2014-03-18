@@ -1,6 +1,6 @@
 class PostsController < ApplicationController
 
-  before_action :delay
+  #before_action :delay
 
   def index
     @posts = Post.ordered.page(params[:page]).per(5)
