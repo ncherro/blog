@@ -17,8 +17,29 @@
         Blog.Ui.Comment { model: comment, load: false }
 
 
+  Blog.Ui.CommentForm = React.createClass
+    # event handlers
+    handleChange: (e) ->
+      @setState
+        comment: e.target.value
+
+    handleSubmit: (e) ->
+      e.preventDefault()
+      console.log @state.comment
+
+    # react
+    getInitialState: ->
+      comment: ''
+
+    render: ->
+      D.form { onSubmit: @handleSubmit }, [
+        D.h3 {}, 'New Comment'
+        D.input { type: 'text', onChange: @handleChange, placeholder: 'Comment' }
+        D.button { type: 'submit' }, 'Submit'
+      ]
+
   Blog.Ui.CommentsWrap = React.createClass
-    # event callbacks
+    # event handlers
     handleUpdated: (e, collection, options) ->
       @setState
         loading: false
@@ -26,14 +47,13 @@
 
     # custom methods
     loadMore: (e) ->
-      e.preventDefault()
+      e.preventDefault() if e
       @setState
         loading: true
 
-      # fetch, appending to the collection
+      # fetch all(!) related comments, appending new ones to the collection
       @props.collection.fetch
         remove: false
-
 
     # react
     getInitialState: ->
@@ -45,22 +65,27 @@
       @props.collection.off null, null, @
 
     componentWillMount: ->
-      if !@props.collection.isEmpty()
-        @setState
-          loading: false
-
       # update our state when the collection changes
       @props.collection.on 'add remove change', @handleUpdated, @
 
-    render: ->
-      if @state.loading
-        Blog.Ui.Loading text: 'Loading comments...'
+      if @props.collection.isEmpty()
+        @loadMore()
       else
-        D.div {}, [
-          D.h4 {}, 'Comments'
-          Blog.Ui.Comments { collection: @props.collection }
-          if !@state.loaded_all && @props.collection.parent.get('has_more_comments')
-            D.a {href: '#', onClick: @loadMore }, "Load more"
-        ]
+        @setState
+          loading: false
+
+    render: ->
+      D.div {}, [
+        if @state.loading
+          Blog.Ui.Loading text: 'Loading comments...'
+        else
+          D.div {}, [
+            D.h4 {}, 'Comments'
+            Blog.Ui.Comments { collection: @props.collection }
+            if !@state.loaded_all && @props.collection.parent.get('has_more_comments')
+              D.a {href: '#', onClick: @loadMore }, "Load more"
+          ]
+        Blog.Ui.CommentForm model: new @props.collection.model
+      ]
 
 )()
