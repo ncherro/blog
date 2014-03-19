@@ -55,12 +55,6 @@
 
 
   Blog.Ui.PostsWrap = React.createClass
-    # react-backbone
-    mixins: [Blog.BackboneMixins]
-
-    getBackboneCollections: ->
-      [@props.collection]
-
     # event handlers
     nextPage: (e) ->
       e.preventDefault()
@@ -77,14 +71,7 @@
       # fetch, appending to the collection
       @props.collection.fetch
         remove: false
-        data: { page: p },
-        success: (collection, response, options) =>
-          @setState
-            loading: false
-            current_page: collection.current_page
-            total_pages: collection.total_pages
-            current_count: collection.length
-            total_count: collection.total_count
+        data: { page: p }
 
     # react
     getInitialState: ->
@@ -98,8 +85,18 @@
     componentWillUnmount: ->
       # unbind event listeners
       $(window).off 'scroll.posts'
+      @props.collection.off null, null, @
 
-    componentDidMount: ->
+    componentWillMount: ->
+      # set up our collection event handler, update state when collection changes
+      @props.collection.on 'add remove change', (q, collection, options) =>
+        @setState
+          loading: false
+          current_page: collection.current_page
+          total_pages: collection.total_pages
+          current_count: collection.length
+          total_count: collection.total_count
+
       # load more when we hit the bottom of the page
       $(window).on 'scroll.posts', =>
         if !@state.loading && (@state.current_page != @state.total_pages) &&
@@ -110,7 +107,7 @@
               @loadMore(@state.current_page + 1)
             , 700)
 
-      # start it up by loading initial
+      # load initial stuff
       @loadMore()
 
     render: ->
