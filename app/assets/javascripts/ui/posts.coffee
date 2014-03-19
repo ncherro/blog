@@ -6,52 +6,53 @@
   Blog.Ui.Post = React.createClass
 
     getInitialState: ->
-      loading: false
+      loading: true
+
+    componentWillUnmount: ->
+      # unbind all event listeners
+      @props.model.off null, null, @
 
     componentWillMount: ->
-      if typeof @props.post == 'undefined'
-        # we are coming directly from backbone - look it up...
-        @setState
-          loading: true
+      load = typeof @props.load == 'undefined' ? true : @props.load
 
-        @props.model.fetch
-          success: (model, response, options) =>
-            @setProps
-              post: model
-            @setState
-              loading: false
+      @setState
+        loading: load
+
+      # update our state when the model changes
+      @props.model.on 'change', (model, resp, options) =>
+        @setState
+          loading: false
+
+      @props.model.fetch() if load
 
     render: ->
       if @state.loading
         Blog.Ui.Loading()
       else
-        # @props.post is a Backbone model
         D.div { className: 'post' }, [
           D.h3 {}, [
-            D.a { href: @props.post.get('url'), onClick: (e) ->
+            D.a { href: @props.model.get('url'), onClick: (e) ->
               e.preventDefault()
               new Blog.Routers.Main().navigate($(e.target).attr('href'), true)
-            }, @props.post.get('title')
+            }, @props.model.get('title')
           ]
-          D.p {}, @props.post.get('pub_date_local')
-          D.div { dangerouslySetInnerHTML: { __html: converter.makeHtml(@props.post.get('copy')) }}
+          D.p {}, @props.model.get('pub_date_local')
+          D.div { dangerouslySetInnerHTML: {
+            __html: converter.makeHtml(@props.model.get('copy'))
+          }}
           Blog.Ui.CommentsWrap
-            comments: @props.post.get('comments'),
-            has_more_comments: @props.post.get('has_more_comments'),
-            comments_url: @props.post.get('comments_url'),
+            comments: @props.model.get('comments'),
+            has_more_comments: @props.model.get('has_more_comments'),
             source: false,
           D.hr {}
         ]
 
 
   Blog.Ui.Posts = React.createClass
-    # loop through and render posts
+    # loop through and render posts (load: false b/c they are loaded)
     render: ->
-
-      renderPost = (post) ->
-        Blog.Ui.Post { post: post }
-
-      D.div { className: 'posts' }, @props.collection.map(renderPost)
+      D.div { className: 'posts' }, @props.collection.map (post) ->
+        Blog.Ui.Post { model: post, load: false }
 
 
   Blog.Ui.PostsWrap = React.createClass
@@ -82,7 +83,7 @@
       collection: []
 
     componentWillUnmount: ->
-      # unbind event listeners
+      # unbind all event listeners
       $(window).off 'scroll.posts'
       @props.collection.off null, null, @
 
