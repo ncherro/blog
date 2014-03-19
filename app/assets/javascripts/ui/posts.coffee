@@ -62,7 +62,6 @@
 
     # custom methods
     loadMore: (p) ->
-
       p = p || @state.current_page
 
       @setState
@@ -107,7 +106,7 @@
               @loadMore(@state.current_page + 1)
             , 700)
 
-      # load initial stuff
+      # fetch
       @loadMore()
 
     render: ->
