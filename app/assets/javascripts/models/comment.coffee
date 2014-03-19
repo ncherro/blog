@@ -6,7 +6,4 @@
 
     idAttribute: 'id'
 
-    defaults:
-      comment: ''
-
 )()

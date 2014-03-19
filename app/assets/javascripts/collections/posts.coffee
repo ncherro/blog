@@ -6,9 +6,10 @@
 
     url: '/posts'
 
-    current_page: 1,
-    total_pages: 1,
-    total_count: 1,
+    # custom properties
+    current_page: 1
+    total_pages: 1
+    total_count: 1
 
     parse: (response) ->
       @current_page = response.meta.current_page

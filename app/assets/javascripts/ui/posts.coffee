@@ -19,10 +19,8 @@
 
     componentWillMount: ->
       load = typeof @props.load == 'undefined' ? true : @props.load
-
       @setState
         loading: load
-
       # update our state when the model changes
       @props.model.on 'change', @handleChanged, @
       @props.model.fetch() if load
@@ -45,9 +43,7 @@
             __html: converter.makeHtml(@props.model.get('copy'))
           }}
           Blog.Ui.CommentsWrap
-            comments: @props.model.get('comments'),
-            has_more_comments: @props.model.get('has_more_comments'),
-            source: false,
+            collection: @props.model.comments
           D.hr {}
         ]
 
@@ -62,7 +58,6 @@
   Blog.Ui.PostsWrap = React.createClass
     # event handlers
     handleUpdated: (e, collection, options) ->
-      console.log "Collection is updated"
       @setState
         loading: false
         current_page: collection.current_page
@@ -77,10 +72,8 @@
     # custom methods
     loadMore: (p) ->
       p = p || @state.current_page
-
       @setState
         loading: true
-
       # fetch, appending to the collection
       @props.collection.fetch
         remove: false
@@ -93,7 +86,6 @@
       total_pages: 1
       current_count: 1
       total_count: 1
-      collection: []
 
     componentWillUnmount: ->
       $(window).off 'scroll.posts'
@@ -127,7 +119,7 @@
           if @state.loading
             Blog.Ui.Loading()
           else if @state.current_page != @state.total_pages
-            D.a {href: '#', onClick: @nextPage, className: 'more-posts'}, "Load more"
+            D.a {href: '#', onClick: @nextPage }, "Load more"
         ]
       ]
 
