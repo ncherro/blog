@@ -3,6 +3,6 @@
 
   Blog.Ui.Loading = React.createClass
     render: ->
-      D.p { className: 'loading' }, 'Loading...'
+      D.p { className: 'loading' }, @props.text || 'Loading...'
 
 )()

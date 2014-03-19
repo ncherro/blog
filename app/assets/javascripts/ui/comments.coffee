@@ -7,7 +7,6 @@
       D.div { className: 'comment' }, [
         D.p {}, @props.model.get('comment')
         D.p {}, @props.model.get('created_at')
-        D.hr {}
       ]
 
 
@@ -21,30 +20,25 @@
   Blog.Ui.CommentsWrap = React.createClass
     # event callbacks
     handleUpdated: (e, collection, options) ->
-      console.log 'yip'
-
-    nextPage: (e) ->
-      e.preventDefault()
-      @loadMore(@state.current_page + 1)
+      @setState
+        loading: false
+        loaded_all: true
 
     # custom methods
-    loadMore: (p) ->
-      p = p || @state.current_page
+    loadMore: (e) ->
+      e.preventDefault()
       @setState
         loading: true
+
       # fetch, appending to the collection
       @props.collection.fetch
         remove: false
-        data: { page: p }
 
 
     # react
     getInitialState: ->
       loading: true
-      current_page: 1
-      total_pages: 1
-      current_count: 1
-      total_count: 1
+      loaded_all: false
 
     componentWillUnmount: ->
       # unbind all event listeners in @ context
@@ -60,12 +54,13 @@
 
     render: ->
       if @state.loading
-        Blog.Ui.Loading()
+        Blog.Ui.Loading text: 'Loading comments...'
       else
         D.div {}, [
+          D.h4 {}, 'Comments'
           Blog.Ui.Comments { collection: @props.collection }
-          if @state.current_page != @state.total_pages
-            D.a {href: '#', onClick: @nextPage }, "Load more"
+          if !@state.loaded_all && @props.collection.parent.get('has_more_comments')
+            D.a {href: '#', onClick: @loadMore }, "Load more"
         ]
 
 )()

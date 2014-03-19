@@ -5,9 +5,7 @@
     model: Blog.Models.Comment
 
     # custom properties
-    current_page: 1
-    total_pages: 1
-    total_count: 1
+    parent: null
 
     parse: (response) ->
       @current_page = response.meta.current_page

@@ -25,8 +25,8 @@
       React.unmountComponentAtNode(content)
       React.renderComponent(
         (Blog.Ui.Post {
-          model: Blog.Models.Post.findOrCreate({ id: id }),
-          standalone: true,
+          model: new Blog.Models.Post { id: id }
+          standalone: true
         }),
         content
       )
