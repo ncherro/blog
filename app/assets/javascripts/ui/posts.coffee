@@ -4,12 +4,17 @@
 
   # Posts
   Blog.Ui.Post = React.createClass
+    # event handlers
+    changed: (model, resp, options) ->
+      @setState
+        loading: false
 
+    # react
     getInitialState: ->
       loading: true
 
     componentWillUnmount: ->
-      # unbind all event listeners
+      # unbind all event listeners in @ context
       @props.model.off null, null, @
 
     componentWillMount: ->
@@ -19,17 +24,16 @@
         loading: load
 
       # update our state when the model changes
-      @props.model.on 'change', (model, resp, options) =>
-        @setState
-          loading: false
-
+      @props.model.on 'change', @changed, @
       @props.model.fetch() if load
 
     render: ->
       if @state.loading
         Blog.Ui.Loading()
       else
-        D.div { className: 'post' }, [
+        attrs = { className: 'post' }
+        attrs['id'] = 'posts-wrap' if @props.standalone
+        D.div attrs, [
           D.h3 {}, [
             D.a { href: @props.model.get('url'), onClick: (e) ->
               e.preventDefault()
@@ -57,6 +61,15 @@
 
   Blog.Ui.PostsWrap = React.createClass
     # event handlers
+    updated: (e, collection, options) ->
+      console.log "Collection is updated"
+      @setState
+        loading: false
+        current_page: collection.current_page
+        total_pages: collection.total_pages
+        current_count: collection.length
+        total_count: collection.total_count
+
     nextPage: (e) ->
       e.preventDefault()
       @loadMore(@state.current_page + 1)
@@ -83,19 +96,13 @@
       collection: []
 
     componentWillUnmount: ->
-      # unbind all event listeners
+      # unbind all event listeners in @ context
       $(window).off 'scroll.posts'
       @props.collection.off null, null, @
 
     componentWillMount: ->
       # update our state when the collection changes
-      @props.collection.on 'add remove change', (e, collection, options) =>
-        @setState
-          loading: false
-          current_page: collection.current_page
-          total_pages: collection.total_pages
-          current_count: collection.length
-          total_count: collection.total_count
+      @props.collection.on 'add remove change', @updated, @
 
       # load more when we hit the bottom of the page
       $(window).on 'scroll.posts', =>

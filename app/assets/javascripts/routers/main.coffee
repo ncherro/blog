@@ -24,7 +24,10 @@
       # render our UI component, passing in a collection and an id
       React.unmountComponentAtNode(content)
       React.renderComponent(
-        (Blog.Ui.Post { model: new Blog.Models.Post({ id: id }) }),
+        (Blog.Ui.Post {
+          model: Blog.Models.Post.findOrCreate({ id: id }),
+          standalone: true,
+        }),
         content
       )
 

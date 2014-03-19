@@ -19,34 +19,7 @@
       )
 
   Blog.Ui.CommentsWrap = React.createClass
-    # our callbacks
-    dataReceived: (data) ->
-      @setState {
-        comments: data.comments,
-        has_more_comments: false,
-      }
-
-    # our event handlers
-    showComments: (e) ->
-      $.getJSON(@props.comments_url, @dataReceived)
-      false
-
-    # react
-    getInitialState: ->
-      {
-        has_more_comments: @props.has_more_comments,
-        comments: @props.comments,
-      }
-
     render: ->
-      if @state.has_more_comments
-        more = (D.a { href: '#', onClick: @showComments }, 'More')
-      else
-        more = null
-      D.div { className: 'comments' }, [
-        D.h4 {}, 'Comments'
-        Blog.Ui.Comments { data: @state.comments }
-        more
-      ]
+      D.h4 {}, 'hi'
 
 )()

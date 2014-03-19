@@ -1,8 +1,10 @@
 (() ->
 
-  Blog.Models.Post = Backbone.Model.extend
+  Blog.Models.Post = Backbone.RelationalModel.extend
 
     urlRoot: '/posts'
+
+    idAttribute: 'id'
 
     relations: [
       type: Backbone.HasMany
@@ -10,13 +12,7 @@
       relatedModel: 'Blog.Models.Comment'
       reverseRelation:
         key: 'post'
+        includeInJSON: 'id'
     ]
-
-    defaults:
-      title: null
-      copy: null
-      pub_date: null
-      has_more_comments: false
-      comments: []
 
 )()
