@@ -74,9 +74,9 @@
       @setState
         loading: true
 
-      # fetch from our collection
+      # fetch, appending to the collection
       @props.collection.fetch
-        remove: false # ensure things are only added
+        remove: false
         data: { page: p },
         success: (collection, response, options) =>
           @setState
@@ -96,6 +96,7 @@
       collection: []
 
     componentWillUnmount: ->
+      # unbind event listeners
       $(window).off 'scroll.posts'
 
     componentDidMount: ->
@@ -111,7 +112,6 @@
 
       # start it up by loading initial
       @loadMore()
-
 
     render: ->
       D.div {}, [
