@@ -89,7 +89,7 @@
 
     componentWillMount: ->
       # update our state when the collection changes
-      @props.collection.on 'add remove change', (q, collection, options) =>
+      @props.collection.on 'add remove change', (e, collection, options) =>
         @setState
           loading: false
           current_page: collection.current_page
