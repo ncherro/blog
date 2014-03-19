@@ -68,23 +68,23 @@
 
     # custom methods
     loadMore: (p) ->
-      success = (collection, response, options) ->
-        @setState
-          loading: false
-          current_page: collection.current_page
-          total_pages: collection.total_pages
-          current_count: collection.length
-          total_count: collection.total_count
 
       p = p || @state.current_page
 
       @setState
         loading: true
 
+      # fetch from our collection
       @props.collection.fetch
         remove: false # ensure things are only added
         data: { page: p },
-        success: success.bind(@)
+        success: (collection, response, options) =>
+          @setState
+            loading: false
+            current_page: collection.current_page
+            total_pages: collection.total_pages
+            current_count: collection.length
+            total_count: collection.total_count
 
     # react
     getInitialState: ->
@@ -95,25 +95,36 @@
       total_count: 1
       collection: []
 
-    componentDidUnmount: ->
+    componentWillUnmount: ->
       $(window).off 'scroll.posts'
 
     componentDidMount: ->
+      # load more when we hit the bottom of the page
+      $(window).on 'scroll.posts', =>
+        if !@state.loading && (@state.current_page != @state.total_pages) &&
+          $(window).scrollTop() + $(window).height() == $(document).height()
+            @setState
+              loading: true
+            setTimeout(() =>
+              @loadMore(@state.current_page + 1)
+            , 700)
+
+      # start it up by loading initial
       @loadMore()
 
-      $(window).on 'scroll.posts', =>
-        if @state.current_page != @state.total_pages &&
-          $(window).scrollTop() + $(window).height() == $(document).height()
-            @loadMore(@state.current_page + 1)
 
     render: ->
       D.div {}, [
-        D.h1 {}, "Showing 1 - #{@state.current_count} of #{@state.total_count} Posts"
-        Blog.Ui.Posts { collection: @props.collection }
-        if @state.loading
-          Blog.Ui.Loading()
-        else if @state.current_page != @state.total_pages
-          D.a {href: '#', onClick: @nextPage, className: 'more-posts'}, "Load more"
+        D.div { id: 'info' }, [
+          D.h1 {}, "Showing 1 - #{@state.current_count} of #{@state.total_count} Posts"
+        ]
+        D.div { id: 'posts-wrap' }, [
+          Blog.Ui.Posts { collection: @props.collection }
+          if @state.loading
+            Blog.Ui.Loading()
+          else if @state.current_page != @state.total_pages
+            D.a {href: '#', onClick: @nextPage, className: 'more-posts'}, "Load more"
+        ]
       ]
 
 )()

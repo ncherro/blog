@@ -1,5 +1,5 @@
 json.meta do
-  json.current_page @posts.current_page
+  json.current_page (@posts.current_page > @posts.total_pages ? @posts.total_pages : @posts.current_page)
   json.total_pages @posts.total_pages
   json.total_count @posts.total_count
 end
