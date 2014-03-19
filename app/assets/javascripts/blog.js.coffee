@@ -22,7 +22,7 @@ window.Blog =
         # React validates that it's a function.
         #
         # `collection` events pass additional arguments that are not functions
-        collection.on('add remove change', @forceUpdate.bind(@, null))
+        collection.on 'add remove change', @forceUpdate.bind(@, null)
       @getBackboneCollections().forEach(bindCallbacks, @)
 
     componentWillUnmount: () ->
@@ -30,7 +30,7 @@ window.Blog =
       #
       # unbind listeners when the component is destroyed
       cleanup = (collection) ->
-        collection.off(null, null, @)
+        collection.off null, null, @
       @getBackboneCollections().forEach(cleanup, @)
 
 

@@ -14,14 +14,12 @@
         @setState
           loading: true
 
-        success = (model, response, options) ->
-          @setProps
-            post: model
-          @setState
-            loading: false
-
         @props.model.fetch
-          success: success.bind(@)
+          success: (model, response, options) =>
+            @setProps
+              post: model
+            @setState
+              loading: false
 
     render: ->
       if @state.loading
@@ -97,8 +95,16 @@
       total_count: 1
       collection: []
 
+    componentDidUnmount: ->
+      $(window).off 'scroll.posts'
+
     componentDidMount: ->
       @loadMore()
+
+      $(window).on 'scroll.posts', =>
+        if @state.current_page != @state.total_pages &&
+          $(window).scrollTop() + $(window).height() == $(document).height()
+            @loadMore(@state.current_page + 1)
 
     render: ->
       D.div {}, [
@@ -107,7 +113,7 @@
         if @state.loading
           Blog.Ui.Loading()
         else if @state.current_page != @state.total_pages
-          D.a {href: '#', onClick: @nextPage}, "Load more"
+          D.a {href: '#', onClick: @nextPage, className: 'more-posts'}, "Load more"
       ]
 
 )()
