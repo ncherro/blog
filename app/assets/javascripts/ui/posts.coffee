@@ -5,7 +5,7 @@
   # Posts
   Blog.Ui.Post = React.createClass
     # event handlers
-    changed: (model, resp, options) ->
+    handleChanged: (model, resp, options) ->
       @setState
         loading: false
 
@@ -24,7 +24,7 @@
         loading: load
 
       # update our state when the model changes
-      @props.model.on 'change', @changed, @
+      @props.model.on 'change', @handleChanged, @
       @props.model.fetch() if load
 
     render: ->
@@ -61,7 +61,7 @@
 
   Blog.Ui.PostsWrap = React.createClass
     # event handlers
-    updated: (e, collection, options) ->
+    handleUpdated: (e, collection, options) ->
       console.log "Collection is updated"
       @setState
         loading: false
@@ -96,13 +96,13 @@
       collection: []
 
     componentWillUnmount: ->
-      # unbind all event listeners in @ context
       $(window).off 'scroll.posts'
+      # unbind all event listeners in @ context
       @props.collection.off null, null, @
 
     componentWillMount: ->
       # update our state when the collection changes
-      @props.collection.on 'add remove change', @updated, @
+      @props.collection.on 'add remove change', @handleUpdated, @
 
       # load more when we hit the bottom of the page
       $(window).on 'scroll.posts', =>
