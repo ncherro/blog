@@ -88,7 +88,7 @@
       @props.collection.off null, null, @
 
     componentWillMount: ->
-      # set up our collection event handler, update state when collection changes
+      # update our state when the collection changes
       @props.collection.on 'add remove change', (q, collection, options) =>
         @setState
           loading: false
