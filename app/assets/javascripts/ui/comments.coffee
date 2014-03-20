@@ -86,18 +86,17 @@
 
     render: ->
       D.div {}, [
-        if @state.loading
-          Blog.Ui.Loading text: 'Loading comments...'
-        else
-          D.div {}, [
-            D.h4 {}, 'Comments'
-            Blog.Ui.Comments { collection: @props.collection }
-            if !@state.loaded_all && @props.collection.parent.get('has_more_comments')
-              D.a {href: '#', onClick: @loadMore }, "Load more"
-          ]
         Blog.Ui.CommentForm
           model: @props.new_model,
           collection: @props.collection
+        D.div {}, [
+          D.h4 {}, 'Comments'
+          Blog.Ui.Comments { collection: @props.collection }
+          if @state.loading
+            Blog.Ui.Loading text: 'Loading comments...'
+          else if !@state.loaded_all && @props.collection.parent.get('has_more_comments')
+            D.a {href: '#', onClick: @loadMore }, "Load more"
+        ]
       ]
 
 )()
