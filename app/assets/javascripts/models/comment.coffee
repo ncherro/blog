@@ -4,8 +4,6 @@
 
     urlRoot: '/comments'
 
-    paramRoot: 'comment'
-
     idAttribute: 'id'
 
 )()

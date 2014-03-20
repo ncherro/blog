@@ -12,9 +12,9 @@ json.tags do
   end
 end
 
+json.comments_count post.comments.count
 json.comments do
   json.array! post.comments.ordered.limit(3),
     partial: 'comments/comment',
     as: :comment
 end
-json.has_more_comments (post.comments.count > 3)

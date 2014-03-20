@@ -3,6 +3,7 @@ class CommentsController < ApplicationController
   def index
     post = Post.find(params[:post_id])
     @comments = post.comments.ordered#.page(params[:page]).per(10)
+    @total_count = post.comments.count
   end
 
   def create

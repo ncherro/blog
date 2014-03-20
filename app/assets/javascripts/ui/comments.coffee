@@ -26,11 +26,13 @@
     handleSubmit: (e) ->
       e.preventDefault()
       # we have a boilerplate model passed in - clone it, saving the new content
-      @props.model.clone().save(content: @state.content).done((model, status, jqXHR) =>
-        @props.collection.add(model)
-        @setState
-          content: ''
-      )
+      @props.model.clone().save(
+        { content: @state.content },
+        success: (model, status, jqXHR) =>
+          @props.collection.add(model)
+          @setState
+            content: ''
+        )
 
     # react
     getInitialState: ->
@@ -53,7 +55,6 @@
     handleUpdated: (e, collection, options) ->
       @setState
         loading: false
-        loaded_all: true
 
     # custom methods
     loadMore: (e) ->
@@ -68,7 +69,6 @@
     # react
     getInitialState: ->
       loading: true
-      loaded_all: false
 
     componentWillUnmount: ->
       # unbind all event listeners in @ context
@@ -86,17 +86,18 @@
 
     render: ->
       D.div {}, [
+        D.div {}, [
+          D.h4 {}, 'Comments'
+          Blog.Ui.Comments collection: @props.collection
+          if @state.loading
+            Blog.Ui.Loading text: 'Loading comments...'
+          else if @props.collection.total_count > @props.collection.length
+            D.a {href: '#', onClick: @loadMore }, "Load more"
+        ]
+        D.hr {}
         Blog.Ui.CommentForm
           model: @props.new_model,
           collection: @props.collection
-        D.div {}, [
-          D.h4 {}, 'Comments'
-          Blog.Ui.Comments { collection: @props.collection }
-          if @state.loading
-            Blog.Ui.Loading text: 'Loading comments...'
-          else if !@state.loaded_all && @props.collection.parent.get('has_more_comments')
-            D.a {href: '#', onClick: @loadMore }, "Load more"
-        ]
       ]
 
 )()
