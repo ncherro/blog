@@ -2,7 +2,7 @@ class CommentsController < ApplicationController
 
   def index
     post = Post.find(params[:post_id])
-    @comments = post.comments.ordered.page(params[:page]).per(10)
+    @comments = post.comments.ordered#.page(params[:page]).per(10)
   end
 
   def create

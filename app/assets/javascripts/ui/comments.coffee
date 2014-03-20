@@ -5,7 +5,7 @@
   Blog.Ui.Comment = React.createClass
     render: ->
       D.div { className: 'comment' }, [
-        D.p {}, @props.model.get('comment')
+        D.p {}, "##{@props.model.get('id')} - #{@props.model.get('comment')}"
         D.p {}, @props.model.get('created_at')
       ]
 
@@ -25,7 +25,12 @@
 
     handleSubmit: (e) ->
       e.preventDefault()
-      console.log @state.comment
+      @props.model.save(comment: @state.comment).done((a, b, c) =>
+        console.log a, b, c
+        console.log @props.model
+        console.log @props.model.get('comment')
+        @props.collection.add(@props.model)
+      )
 
     # react
     getInitialState: ->
@@ -85,7 +90,7 @@
             if !@state.loaded_all && @props.collection.parent.get('has_more_comments')
               D.a {href: '#', onClick: @loadMore }, "Load more"
           ]
-        Blog.Ui.CommentForm model: new @props.collection.model
+        Blog.Ui.CommentForm model: @props.new_model, collection: @props.collection
       ]
 
 )()

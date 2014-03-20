@@ -43,7 +43,8 @@
             __html: converter.makeHtml(@props.model.get('copy'))
           }}
           Blog.Ui.CommentsWrap
-            collection: @props.model.comments
+            collection: @props.model.comments,
+            new_model: new @props.model.comments.model(post_id: @props.model.get('id'))
           D.hr {}
         ]
 
