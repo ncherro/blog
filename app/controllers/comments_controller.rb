@@ -12,7 +12,7 @@ class CommentsController < ApplicationController
         format.json
       end
     else
-      render nothing: true, status: 400
+      render nothing: true, status: :unprocessable_entity
     end
   end
 
