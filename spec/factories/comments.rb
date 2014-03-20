@@ -2,7 +2,7 @@ FactoryGirl.define do
 
   factory :comment do
     post
-    comment Lorem::Base.new('words', 12).output
+    content Lorem::Base.new('words', 12).output
   end
 
 end

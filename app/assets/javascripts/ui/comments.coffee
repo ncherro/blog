@@ -5,7 +5,7 @@
   Blog.Ui.Comment = React.createClass
     render: ->
       D.div { className: 'comment' }, [
-        D.p {}, "##{@props.model.get('id')} - #{@props.model.get('comment')}"
+        D.p {}, "##{@props.model.get('id')} - #{@props.model.get('content')}"
         D.p {}, @props.model.get('created_at')
       ]
 
@@ -21,25 +21,30 @@
     # event handlers
     handleChange: (e) ->
       @setState
-        comment: e.target.value
+        content: e.target.value
 
     handleSubmit: (e) ->
       e.preventDefault()
-      @props.model.save(comment: @state.comment).done((a, b, c) =>
-        console.log a, b, c
-        console.log @props.model
-        console.log @props.model.get('comment')
-        @props.collection.add(@props.model)
+      # we have a boilerplate model passed in - clone it, saving the new content
+      @props.model.clone().save(content: @state.content).done((model, status, jqXHR) =>
+        @props.collection.add(model)
+        @setState
+          content: ''
       )
 
     # react
     getInitialState: ->
-      comment: ''
+      content: ''
 
     render: ->
       D.form { onSubmit: @handleSubmit }, [
         D.h3 {}, 'New Comment'
-        D.input { type: 'text', onChange: @handleChange, placeholder: 'Comment' }
+        D.input {
+          type: 'text'
+          onChange: @handleChange
+          placeholder: 'Comment'
+          value: @state.content
+        }
         D.button { type: 'submit' }, 'Submit'
       ]
 
@@ -90,7 +95,9 @@
             if !@state.loaded_all && @props.collection.parent.get('has_more_comments')
               D.a {href: '#', onClick: @loadMore }, "Load more"
           ]
-        Blog.Ui.CommentForm model: @props.new_model, collection: @props.collection
+        Blog.Ui.CommentForm
+          model: @props.new_model,
+          collection: @props.collection
       ]
 
 )()

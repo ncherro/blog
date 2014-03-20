@@ -2,7 +2,7 @@ class Comment < ActiveRecord::Base
 
   belongs_to :post
 
-  validates :comment, :post, presence: true
+  validates :content, :post, presence: true
 
   class << self
     def ordered
