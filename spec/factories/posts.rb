@@ -5,7 +5,7 @@ FactoryGirl.define do
 
   trait :with_comments do
     after(:build) do |post|
-      rand(6..20).times do
+      5.times do
         post.comments << FactoryGirl.build(:comment, post: post)
       end
     end
