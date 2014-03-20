@@ -6,7 +6,7 @@
 
     url: '/posts'
 
-    # custom properties
+    # custom properties used for pagination
     current_page: 1
     total_pages: 1
     total_count: 1
