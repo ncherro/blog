@@ -5,7 +5,7 @@
   # Posts
   Blog.Ui.Post = React.createClass
     # event handlers
-    handleChanged: (model, resp, options) ->
+    handleChanged: (model, options) ->
       @setState
         loading: false
 
@@ -82,7 +82,7 @@
 
     componentWillUnmount: ->
       $(window).off 'scroll.posts'
-      # unbind all event listeners in @ context
+      # unbind all event listeners with @ context
       @props.collection.off null, null, @
 
     componentWillMount: ->
