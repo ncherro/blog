@@ -105,7 +105,8 @@
     render: ->
       D.div {}, [
         D.div { id: 'info' }, [
-          D.h1 {}, "Showing 1 - #{@props.collection.current_count} of #{@props.collection.total_count} Posts"
+          if @props.collection.length
+            D.h1 {}, "Showing 1 - #{@props.collection.length} of #{@props.collection.total_count} Posts"
         ]
         D.div { id: 'posts-wrap' }, [
           Blog.Ui.Posts { collection: @props.collection }
