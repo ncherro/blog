@@ -87,7 +87,7 @@
 
     componentWillMount: ->
       # update our state when the collection changes
-      @props.collection.on 'add remove change', @handleUpdated, @
+      @props.collection.on 'add remove reset', @handleUpdated, @
 
       # load more when we hit the bottom of the page
       $(window).on 'scroll.posts', =>
