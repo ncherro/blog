@@ -97,7 +97,7 @@
               loading: true
             setTimeout(() =>
               @loadMore(@props.collection.current_page + 1)
-            , 700)
+            , 600)
 
       # fetch
       @loadMore()
