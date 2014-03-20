@@ -76,7 +76,7 @@
 
     componentWillMount: ->
       # update our state when the collection changes
-      @props.collection.on 'add remove change', @handleUpdated, @
+      @props.collection.on 'add remove reset', @handleUpdated, @
 
       if @props.collection.isEmpty()
         @loadMore()
