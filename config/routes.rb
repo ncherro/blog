@@ -2,9 +2,8 @@ Blog::Application.routes.draw do
 
   scope defaults: { format: :json } do
     resources :posts do
-      resources :comments, only: :index
+      resources :comments, only: [:index, :create]
     end
-    resources :comments, only: :create
   end
 
   resources :tags, only: :show

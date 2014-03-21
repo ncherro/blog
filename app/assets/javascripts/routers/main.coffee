@@ -13,7 +13,9 @@
       # render our UI component, passing in a collection
       React.unmountComponentAtNode(content)
       React.renderComponent(
-        (Blog.Ui.PostsWrap { collection: new Blog.Collections.Posts() }),
+        Blog.Ui.PostsWrap(
+          posts: new Blog.Collections.Posts
+        ),
         content
       )
 
@@ -24,12 +26,13 @@
       # render our UI component, passing in a collection and an id
       React.unmountComponentAtNode(content)
       React.renderComponent(
-        (Blog.Ui.Post {
-          model: new Blog.Models.Post { id: id }
+        Blog.Ui.Post(
+          post: Blog.Models.Post.findOrCreate(id: id)
           standalone: true
-        }),
+        ),
         content
       )
+
 
     posts_edit: (id) ->
       console.log "posts edit #{id}"

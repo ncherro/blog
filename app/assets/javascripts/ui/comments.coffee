@@ -2,21 +2,6 @@
   D = React.DOM
 
   # Comments
-  Blog.Ui.Comment = React.createClass
-    render: ->
-      D.div { className: 'comment' }, [
-        D.p {}, "##{@props.model.get('id')} - #{@props.model.get('content')}"
-        D.p {}, @props.model.get('created_at')
-      ]
-
-
-  Blog.Ui.Comments = React.createClass
-    # loop through and render comments (load: false b/c they are loaded)
-    render: ->
-      D.div { className: 'comments' }, @props.collection.map (comment) ->
-        Blog.Ui.Comment { model: comment, load: false }
-
-
   Blog.Ui.CommentForm = React.createClass
     # event handlers
     handleChange: (e) ->
@@ -25,22 +10,36 @@
 
     handleSubmit: (e) ->
       e.preventDefault()
-      # we have a boilerplate model passed in - clone it, saving the new content
-      @props.model.clone().save(
-        { content: @state.content },
-        success: (model, status, jqXHR) =>
-          @props.collection.add(model)
+      @props.comments.create(content: @state.content, {
+        wait: true
+        success: (collection, model) =>
           @setState
             content: ''
-        )
+            errors: []
+        error: (collection, response) =>
+          errors = response.responseJSON
+          r = []
+          _.map errors, (errors_a, key) ->
+            _.map errors_a, (error) ->
+              r.push("#{key} #{error}")
+          @setState
+            errors: r
+      })
 
     # react
     getInitialState: ->
       content: ''
+      errors: []
 
     render: ->
       D.form { onSubmit: @handleSubmit }, [
         D.h3 {}, 'New Comment'
+        if @state.errors.length
+          [
+            (D.h4 {}, "#{@state.errors.length} error(s) prevented your comment from being saved:"),
+            D.ul {}, _.map @state.errors, (error_str) ->
+              D.li {}, error_str
+          ]
         D.input {
           type: 'text'
           onChange: @handleChange
@@ -49,6 +48,22 @@
         }
         D.button { type: 'submit' }, 'Submit'
       ]
+
+
+  Blog.Ui.Comment = React.createClass
+    render: ->
+      D.div { className: 'comment' }, [
+        D.p {}, "##{@props.comment.get('id')} - #{@props.comment.get('content')}"
+        D.p {}, @props.comment.get('created_at')
+      ]
+
+
+  Blog.Ui.Comments = React.createClass
+    # loop through and render comments (load: false b/c they are loaded)
+    render: ->
+      D.div { className: 'comments' }, @props.comments.map (comment) ->
+        Blog.Ui.Comment { comment: comment, load: false }
+
 
   Blog.Ui.CommentsWrap = React.createClass
     # event handlers
@@ -63,7 +78,7 @@
         loading: true
 
       # fetch all(!) related comments, appending new ones to the collection
-      @props.collection.fetch
+      @props.comments.fetch
         remove: false
 
     # react
@@ -72,13 +87,13 @@
 
     componentWillUnmount: ->
       # unbind all event listeners in @ context
-      @props.collection.off null, null, @
+      @props.comments.off null, null, @
 
     componentWillMount: ->
       # update our state when the collection changes
-      @props.collection.on 'add remove reset', @handleUpdated, @
+      @props.comments.on 'add remove reset', @handleUpdated, @
 
-      if @props.collection.isEmpty()
+      if @props.comments.isEmpty()
         @loadMore()
       else
         @setState
@@ -88,16 +103,15 @@
       D.div {}, [
         D.div {}, [
           D.h4 {}, 'Comments'
-          Blog.Ui.Comments collection: @props.collection
+          Blog.Ui.Comments comments: @props.comments
           if @state.loading
             Blog.Ui.Loading text: 'Loading comments...'
-          else if @props.collection.total_count > @props.collection.length
+          else if @props.comments.total_count > @props.comments.length
             D.a {href: '#', onClick: @loadMore }, "Load more"
         ]
         D.hr {}
         Blog.Ui.CommentForm
-          model: @props.new_model,
-          collection: @props.collection
+          comments: @props.comments
       ]
 
 )()

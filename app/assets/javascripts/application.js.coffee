@@ -4,3 +4,4 @@
 #= require jquery_ujs
 #= require lib/underscore-min
 #= require lib/backbone-min
+#= require lib/backbone-relational

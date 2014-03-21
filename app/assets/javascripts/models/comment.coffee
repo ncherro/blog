@@ -1,9 +1,9 @@
 (() ->
 
-  Blog.Models.Comment = Backbone.Model.extend
+  Blog.Models.Comment = Backbone.RelationalModel.extend
 
-    urlRoot: '/comments'
-
-    idAttribute: 'id'
+    urlRoot: ->
+      post = @get('post') or @collection.post
+      "/posts/#{post.id}/comments"
 
 )()

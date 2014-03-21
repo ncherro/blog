@@ -4,8 +4,6 @@
 
     model: Blog.Models.Comment
 
-    # url is defined in the model
-
     # custom properties
     parent: null
     total_count: 0
