@@ -1,6 +1,6 @@
 (() ->
 
-  Blog.Collections.Posts = Backbone.Collection.extend
+  class Blog.Collections.Posts extends Backbone.Collection
 
     model: Blog.Models.Post
 

@@ -1,3 +1,5 @@
+all_comments ||= false
+
 json.id post.id
 json.title post.title
 json.url post_path(post)
@@ -14,7 +16,9 @@ end
 
 json.comments_count post.comments.count
 json.comments do
-  json.array! post.comments.ordered.limit(3),
+  comments = post.comments.ordered
+  comments = comments.limit(3) unless all_comments
+  json.array! comments,
     partial: 'comments/comment',
     as: :comment
 end

@@ -3,6 +3,7 @@ html
   head
     title Blog
     = stylesheet_link_tag :application
+    = requirejs_include_tag 'application'
     = csrf_meta_tags
 
   body
@@ -15,5 +16,4 @@ html
       p
         | Hey there I am the footer
 
-  = javascript_include_tag :application
-  = yield :additional_js
+  /= yield :additional_js

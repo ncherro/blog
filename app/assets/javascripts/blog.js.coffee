@@ -1,16 +1,19 @@
+define ['backbone'], (Backbone) ->
+  Blog =
+    Models: {}
+    Collections: {}
+    Routers: {}
+    Ui: {}
 #= require_self
 #= require ui/comments
 #= require ui/posts
 #= require ui/common
-#= require_tree ./models
-#= require_tree ./collections
+#= require models/comment
+#= require collections/comments
+#= require collections/posts
+#= require models/post
 #= require_tree ./routers
 
-window.Blog =
-  Models: {}
-  Collections: {}
-  Routers: {}
-  Ui: {}
 
 $ ->
   # initialize the backbone router

@@ -18,12 +18,14 @@
       @props.post.off null, null, @
 
     componentWillMount: ->
-      load = typeof @props.load == 'undefined' ? true : @props.load
       @setState
-        loading: load
+        loading: @props.standalone
+
       # update our state when the model changes
       @props.post.on 'change', @handleChanged, @
-      @props.post.fetch() if load
+
+      if @props.standalone
+        @props.post.fetch data: { all_comments: true }
 
     render: ->
       if @state.loading
@@ -44,6 +46,7 @@
           }}
           Blog.Ui.CommentsWrap
             comments: @props.post.get('comments')
+            comments_count: @props.post.get('comments_count')
           D.hr {}
         ]
 

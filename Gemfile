@@ -11,6 +11,7 @@ gem 'lorem'
 gem 'slim-rails'
 gem 'kaminari'
 gem 'quiet_assets'
+gem 'requirejs-rails'
 
 group :doc do
   gem 'sdoc', require: false

@@ -1,0 +1,17 @@
+paths:
+  jquery: 'lib/jquery-1.11.0.min'
+  react: 'lib/react-with-addons-0.9.0'
+  backbone: 'lib/backbone-min'
+  backbone_relational: 'lib/backbone-relational'
+  underscore: 'lib/underscore-min'
+  blog: 'blog'
+
+# shim non-amd libraries
+shim:
+  backbone:
+    deps: ['underscore', 'jquery']
+    exports: 'Backbone'
+  'backbone.relational':
+    deps: ['backbone']
+  underscore:
+    exports: '_'

@@ -1,6 +1,8 @@
-(() ->
+define ['backbone', 'react',
+  'ui/posts', 'models/post'], (Backbone,
+  React, PostsUI, PostModel) ->
 
-  Blog.Routers.Main = Backbone.Router.extend
+  Backbone.Router.extend
 
     routes:
       "posts/new"      : "posts_new"
@@ -10,6 +12,8 @@
 
     # actions
     posts_index: ->
+      window.c = new Blog.Collections.Posts
+      return
       # render our UI component, passing in a collection
       React.unmountComponentAtNode(content)
       React.renderComponent(
@@ -26,8 +30,8 @@
       # render our UI component, passing in a collection and an id
       React.unmountComponentAtNode(content)
       React.renderComponent(
-        Blog.Ui.Post(
-          post: Blog.Models.Post.findOrCreate(id: id)
+        PostsUI(
+          post: PostModel.findOrCreate(id: id)
           standalone: true
         ),
         content
@@ -40,5 +44,3 @@
     # helper methods
     content:
       document.getElementById('content')
-
-)()

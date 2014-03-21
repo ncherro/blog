@@ -1,9 +1,8 @@
 class PostsController < ApplicationController
 
-  #before_action :delay
-
   def index
     @posts = Post.ordered.page(params[:page]).per(5)
+    @posts = @posts.includes(:comments) if params[:all_comments]
     respond_to do |format|
       format.json
     end
@@ -14,11 +13,6 @@ class PostsController < ApplicationController
     respond_to do |format|
       format.json
     end
-  end
-
-  private
-  def delay
-    sleep 0.3
   end
 
 end

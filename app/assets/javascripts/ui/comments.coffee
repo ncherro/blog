@@ -112,7 +112,7 @@
           Blog.Ui.Comments comments: @props.comments
           if @state.loading
             Blog.Ui.Loading text: 'Loading comments...'
-          else if @props.comments.total_count > @props.comments.length
+          else if @props.comments_count > @props.comments.length
             D.a {href: '#', onClick: @loadMore }, "Load more"
         ]
         D.hr {}
