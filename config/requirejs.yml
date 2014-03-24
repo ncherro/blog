@@ -17,3 +17,5 @@ shim:
     deps: ['backbone']
   underscore:
     exports: '_'
+  jquery_ujs:
+    deps: ['jquery']
