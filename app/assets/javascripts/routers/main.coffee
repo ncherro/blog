@@ -1,10 +1,12 @@
 define ['backbone',
   'react',
   'ui/posts/wrap',
+  'ui/posts/show',
   'collections/posts',
   'models/post'], (Backbone,
   React,
   PostsWrap,
+  Post,
   PostsCollection,
   PostModel) ->
 
@@ -34,7 +36,7 @@ define ['backbone',
       # render our UI component, passing in a collection and an id
       React.unmountComponentAtNode(content)
       React.renderComponent(
-        PostsUI(
+        Post(
           post: PostModel.findOrCreate(id: id)
           standalone: true
         ),
@@ -48,3 +50,5 @@ define ['backbone',
     # helper methods
     content:
       document.getElementById('content')
+
+

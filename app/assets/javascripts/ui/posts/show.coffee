@@ -2,18 +2,23 @@ define ['react',
   'jquery',
   'showdown',
   'ui/common/loading',
-  'routers/main',
-  'ui/comments/wrap'], (React,
+  'ui/comments/wrap',
+  'require'], (React,
   $,
   Showdown,
   Loading,
-  MainRouter,
-  CommentsWrap) ->
-
-  console.log MainRouter
+  CommentsWrap,
+  require) ->
 
   D = React.DOM
   converter = new Showdown.converter
+
+  # NOTE: circular references prevent us from passing in MainRouter above -
+  # this works, but it seems hacky...
+  # TODO: find a better way (or delete this comment)
+  MainRouter = null
+  require ['routers/main'], (Router) ->
+    MainRouter = Router
 
   React.createClass
     # event handlers
@@ -45,12 +50,11 @@ define ['react',
       else
         attrs = { className: 'post' }
         attrs['id'] = 'posts-wrap' if @props.standalone
-        router = new MainRouter()
         D.div attrs, [
           D.h3 {}, [
             D.a { href: @props.post.get('url'), onClick: (e) ->
               e.preventDefault()
-              router.navigate($(e.target).attr('href'), true)
+              new MainRouter().navigate($(e.target).attr('href'), true)
             }, @props.post.get('title')
           ]
           D.p {}, @props.post.get('pub_date_local')
