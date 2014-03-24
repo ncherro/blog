@@ -1,12 +1,19 @@
 define ['react',
+  'jquery',
+  'showdown',
   'ui/common/loading',
   'routers/main',
   'ui/comments/wrap'], (React,
+  $,
+  Showdown,
   Loading,
   MainRouter,
   CommentsWrap) ->
 
+  console.log MainRouter
+
   D = React.DOM
+  converter = new Showdown.converter
 
   React.createClass
     # event handlers
@@ -38,11 +45,12 @@ define ['react',
       else
         attrs = { className: 'post' }
         attrs['id'] = 'posts-wrap' if @props.standalone
+        router = new MainRouter()
         D.div attrs, [
           D.h3 {}, [
             D.a { href: @props.post.get('url'), onClick: (e) ->
               e.preventDefault()
-              new MainRouter().navigate($(e.target).attr('href'), true)
+              router.navigate($(e.target).attr('href'), true)
             }, @props.post.get('title')
           ]
           D.p {}, @props.post.get('pub_date_local')

@@ -1,15 +1,12 @@
 define ['react',
   'jquery',
-  'showdown',
   'ui/common/loading',
   'ui/posts/index'], (React,
   $,
-  Showdown,
   Loading,
   Posts) ->
 
   D = React.DOM
-  converter = new Showdown.converter
 
   React.createClass
     # event handlers

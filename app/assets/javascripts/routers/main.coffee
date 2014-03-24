@@ -1,13 +1,14 @@
 define ['backbone',
   'react',
   'ui/posts/wrap',
+  'collections/posts',
   'models/post'], (Backbone,
   React,
   PostsWrap,
   PostsCollection,
   PostModel) ->
 
-  Backbone.Router.extend
+  class MainRouter extends Backbone.Router
 
     routes:
       "posts/new"      : "posts_new"

@@ -1,4 +1,6 @@
-define ['react'], (React) ->
+define ['react',
+  'jquery'], (React,
+  $) ->
 
   D = React.DOM
 

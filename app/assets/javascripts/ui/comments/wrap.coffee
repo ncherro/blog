@@ -6,6 +6,8 @@ define ['react',
   Comments,
   CommentForm) ->
 
+  D = React.DOM
+
   React.createClass
     # event handlers
     handleUpdated: (e, collection, options) ->
