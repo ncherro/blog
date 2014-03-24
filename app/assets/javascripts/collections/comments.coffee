@@ -1,8 +1,10 @@
-(() ->
+define ['backbone',
+  'models/comment'], (Backbone,
+  CommentModel) ->
 
-  class Blog.Collections.Comments extends Backbone.Collection
+  class CommentsCollection extends Backbone.Collection
 
-    model: Blog.Models.Comment
+    model: CommentModel
 
     url: ->
       post = post || @post
@@ -12,5 +14,3 @@
       if response.meta.total_count
         @total_count = response.meta.total_count
       response.comments
-
-)()

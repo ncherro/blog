@@ -1,8 +1,10 @@
-(() ->
+define ['backbone',
+  'models/post'], (Backbone,
+  PostModel) ->
 
-  class Blog.Collections.Posts extends Backbone.Collection
+  class PostsCollection extends Backbone.Collection
 
-    model: Blog.Models.Post
+    model: PostModel
 
     url: '/posts'
 
@@ -16,5 +18,3 @@
       @total_pages = response.meta.total_pages
       @total_count = response.meta.total_count
       response.posts
-
-)()

@@ -1,9 +1,8 @@
-(() ->
+define ['backbone',
+  'backbone.relational'], (Backbone) ->
 
-  Blog.Models.Comment = Backbone.RelationalModel.extend
+  class CommentModel extends Backbone.RelationalModel
 
     urlRoot: ->
       post = @get('post') or @collection.post
       "/posts/#{post.id}/comments"
-
-)()

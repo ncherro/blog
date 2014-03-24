@@ -1,17 +1,20 @@
-(() ->
+define ['backbone',
+  'models/comment',
+  'collections/comments',
+  'backbone.relational'], (Backbone,
+  CommentModel,
+  CommentsCollection) ->
 
-  Blog.Models.Post = Backbone.RelationalModel.extend
+  class PostModel extends Backbone.RelationalModel
 
     urlRoot: '/posts'
 
     relations: [
       type: Backbone.HasMany
       key: 'comments'
-      relatedModel: Blog.Models.Comment
-      collectionType: Blog.Collections.Comments
+      relatedModel: CommentModel
+      collectionType: CommentsCollection
       reverseRelation:
         key: 'post'
         includeInJSON: 'id'
     ]
-
-)()

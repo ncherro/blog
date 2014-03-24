@@ -1,6 +1,11 @@
-define ['backbone', 'react',
-  'ui/posts', 'models/post'], (Backbone,
-  React, PostsUI, PostModel) ->
+define ['backbone',
+  'react',
+  'ui/posts/wrap',
+  'models/post'], (Backbone,
+  React,
+  PostsWrap,
+  PostsCollection,
+  PostModel) ->
 
   Backbone.Router.extend
 
@@ -12,13 +17,11 @@ define ['backbone', 'react',
 
     # actions
     posts_index: ->
-      window.c = new Blog.Collections.Posts
-      return
       # render our UI component, passing in a collection
       React.unmountComponentAtNode(content)
       React.renderComponent(
-        Blog.Ui.PostsWrap(
-          posts: new Blog.Collections.Posts
+        PostsWrap(
+          posts: new PostsCollection
         ),
         content
       )
