@@ -1,4 +1,4 @@
-define ['react'], (React) ->
+define ['react', 'underscore'], (React, _) ->
 
   D = React.DOM
 

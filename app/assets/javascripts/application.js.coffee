@@ -1,7 +1,8 @@
 require ['jquery',
   'react',
-  'backbone'
-  'routers/main'], ($,
+  'backbone',
+  'routers/main',
+  'jquery_ujs'], ($,
   React,
   Backbone,
   MainRouter) ->

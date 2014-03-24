@@ -1,5 +1,6 @@
 paths:
   jquery: 'lib/jquery-1.11.0.min'
+  jquery_ujs: 'lib/rails'
   react: 'lib/react-with-addons-0.9.0'
   showdown: 'lib/showdown.min'
   backbone: 'lib/backbone-min'
