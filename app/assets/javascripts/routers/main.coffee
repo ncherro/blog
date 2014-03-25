@@ -33,7 +33,7 @@ define ['backbone',
       console.log "posts new"
 
     posts_show: (id) ->
-      # render our UI component, passing in a collection and an id
+      # render our UI component, passing in a model
       React.unmountComponentAtNode(content)
       React.renderComponent(
         Post(
