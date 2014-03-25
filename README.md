@@ -7,7 +7,7 @@ Illustrates data binding using react + backbone in a Rails 4 app.
 ### Back end
 
 - Rails 4
-- PostgreSQL database
+- PostgreSQL
 
 ### Front end
 
