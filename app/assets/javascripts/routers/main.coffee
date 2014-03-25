@@ -13,8 +13,6 @@ define ['backbone',
   class MainRouter extends Backbone.Router
 
     routes:
-      "posts/new"      : "posts_new"
-      "posts/:id/edit" : "posts_edit"
       "posts/:id"      : "posts_show"
       ""               : "posts_index"
 
@@ -29,9 +27,6 @@ define ['backbone',
         content
       )
 
-    posts_new: ->
-      console.log "posts new"
-
     posts_show: (id) ->
       # render our UI component, passing in a model
       React.unmountComponentAtNode(content)
@@ -42,10 +37,6 @@ define ['backbone',
         ),
         content
       )
-
-
-    posts_edit: (id) ->
-      console.log "posts edit #{id}"
 
     # helper methods
     content:
