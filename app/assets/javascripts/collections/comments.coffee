@@ -7,7 +7,6 @@ define ['backbone',
     model: CommentModel
 
     url: ->
-      post = post || @post
       "/posts/#{@post.id}/comments"
 
     parse: (response) ->
