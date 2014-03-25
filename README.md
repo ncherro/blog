@@ -2,11 +2,15 @@
 
 ## About
 
-Illustrates data binding using react + backbone.
+Illustrates data binding using react + backbone in a Rails 4 app.
 
-Uses:
+### Back end
 
 - Rails 4
+- PostgreSQL database
+
+### Front end
+
 - [react](http://facebook.github.io/react/)
 - [backbone](http://backbonejs.org/)
 - [requirejs](http://requirejs.org/)
