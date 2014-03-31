@@ -18,21 +18,27 @@ define ['backbone',
 
     # actions
     posts_index: ->
+
+      window.collection = new PostsCollection
+
       # render our UI component, passing in a collection
       React.unmountComponentAtNode(content)
       React.renderComponent(
         PostsWrap(
-          posts: new PostsCollection
+          posts: window.collection
         ),
         content
       )
 
     posts_show: (id) ->
+
+      window.model = new PostModel.findOrCreate(id: id)
+
       # render our UI component, passing in a model
       React.unmountComponentAtNode(content)
       React.renderComponent(
         Post(
-          post: PostModel.findOrCreate(id: id)
+          post: window.model
           standalone: true
         ),
         content
