@@ -9,4 +9,3 @@ define ['react',
     render: ->
       D.div { className: 'posts' }, @props.posts.map (post) ->
         Post { post: post, load: false }
-

@@ -12,7 +12,9 @@ header, #info {
 #info {
   top: 50px;
 }
-#posts-wrap {
+#posts-form, #posts-wrap {
   margin-top: 120px;
+}
+#posts-wrap {
   min-height: 600px;
 }

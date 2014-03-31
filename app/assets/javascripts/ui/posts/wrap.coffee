@@ -10,7 +10,7 @@ define ['react',
 
   React.createClass
     # event handlers
-    handleUpdated: (e, collection, options) ->
+    handleUpdated: (model, collection, options) ->
       @setState
         loading: false
 
@@ -39,7 +39,11 @@ define ['react',
 
     componentWillMount: ->
       # update our state when the collection changes
-      @props.posts.on 'add remove reset', @handleUpdated, @
+      #
+      # NOTE: add:comments is here b/c we're using backbone:relational and
+      # apparently we need to specify to listen for added comments on new posts
+      # (for some reason things work fine without it on existing posts)
+      @props.posts.on 'add add:comments remove reset', @handleUpdated, @
 
       # load more when we hit the bottom of the page
       $(window).on 'scroll.posts', =>

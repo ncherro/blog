@@ -23,6 +23,7 @@ define ['react',
   React.createClass
     # event handlers
     handleChanged: (model, options) ->
+      console.log 'post changed!'
       @setState
         loading: false
 

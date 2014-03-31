@@ -12,14 +12,14 @@ define ['react', 'underscore'], (React, _) ->
       e.preventDefault()
       @props.comments.create(content: @state.content, {
         wait: true
-        success: (collection, model) =>
+        success: (model, response, options) =>
           @setState
             content: ''
             errors: []
             message: 'Your comment has been saved!'
 
-        error: (collection, response) =>
-          errors = response.responseJSON
+        error: (model, xhr, options) =>
+          errors = xhr.responseJSON
           r = []
           _.map errors, (errors_a, key) ->
             _.map errors_a, (error) ->

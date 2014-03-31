@@ -9,6 +9,9 @@ define ['backbone',
     url: ->
       "/posts/#{@post.id}/comments"
 
+    comparator: (comment) ->
+      comment.get('created_at')
+
     parse: (response) ->
       if response.meta.total_count
         @total_count = response.meta.total_count
