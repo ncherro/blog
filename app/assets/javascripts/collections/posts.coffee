@@ -1,8 +1,9 @@
-define ['backbone',
-  'models/post'], (Backbone,
+define ['backbone'
+  'models/post'
+  'backbone.jsonapi'], (Backbone
   PostModel) ->
 
-  class PostsCollection extends Backbone.Collection
+  class PostsCollection extends Backbone.JsonApiCollection
 
     model: PostModel
 

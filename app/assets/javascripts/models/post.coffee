@@ -1,20 +1,10 @@
 define ['backbone',
   'models/comment',
   'collections/comments',
-  'backbone.relational'], (Backbone,
+  'backbone.jsonapi'], (Backbone,
   CommentModel,
   CommentsCollection) ->
 
-  class PostModel extends Backbone.RelationalModel
+  class PostModel extends Backbone.JsonApiModel
 
     urlRoot: '/posts'
-
-    relations: [
-      type: Backbone.HasMany
-      key: 'comments'
-      relatedModel: CommentModel
-      collectionType: CommentsCollection
-      reverseRelation:
-        key: 'post'
-        includeInJSON: 'id'
-    ]

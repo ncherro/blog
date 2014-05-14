@@ -1,4 +1,4 @@
-define ['backbone',
+define ['backbone'
   'backbone.relational'], (Backbone) ->
 
   class CommentModel extends Backbone.RelationalModel

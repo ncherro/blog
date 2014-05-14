@@ -4,7 +4,7 @@ class PostsController < ApplicationController
     @posts = Post.ordered.page(params[:page]).per(5)
     @posts = @posts.includes(:comments) if params[:all_comments]
     respond_to do |format|
-      format.json
+      format.json { render layout: 'json_api' }
     end
   end
 

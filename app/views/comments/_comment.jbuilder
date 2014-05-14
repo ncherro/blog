@@ -1,3 +1,3 @@
-json.id comment.id
-json.content comment.content
-json.created_at comment.created_at.to_i
+json.id obj.id
+json.content obj.content
+json.created_at obj.created_at.to_i

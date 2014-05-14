@@ -1,5 +1,3 @@
-all_comments ||= false
-
 json.id post.id
 json.title post.title
 json.url post_path(post)
@@ -7,18 +5,20 @@ json.copy (params[:action] == 'show' ? post.copy : truncate(post.copy, length: 1
 json.pub_date_local l(post.pub_date)
 json.created_at post.created_at.to_i
 
-json.tags do
-  json.array! post.tags do |tag|
-    json.name tag.name
-    json.url tag_path(tag)
-  end
-end
-
 json.comments_count post.comments.count
-json.comments do
-  comments = post.comments.ordered
-  comments = comments.limit(3) unless all_comments
-  json.array! comments,
-    partial: 'comments/comment',
-    as: :comment
-end
+
+json_add_linked(
+  'posts.tags',
+  post.tags,
+  partial: 'tags/tag',
+  &:id
+)
+
+json_add_linked(
+  'posts.comments',
+  post.comments.limit(3),
+  partial: 'comments/comment',
+  &:id
+)
+
+json_print_links(json)
