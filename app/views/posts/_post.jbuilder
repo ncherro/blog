@@ -21,4 +21,12 @@ json_add_linked(
   &:id
 )
 
+json_add_linked(
+  'posts.author',
+  post.user,
+  partial: 'users/user',
+  type: 'users',
+  &:id
+)
+
 json_print_links(json)

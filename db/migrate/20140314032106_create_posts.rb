@@ -5,6 +5,7 @@ class CreatePosts < ActiveRecord::Migration
       t.string :slug, index: true
       t.text :copy
       t.date :pub_date, index: true
+      t.belongs_to :user, index: true
 
       t.timestamps
     end
