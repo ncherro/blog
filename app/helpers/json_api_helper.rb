@@ -29,11 +29,12 @@ module JsonApiHelper
     link_key = key.split('.').last
     opts = { partial: nil, type: link_key, href: nil }.merge(opts)
     @json_tl_linked ||= {}
-    @json_tl_linked[key] ||= {}
-    @json_tl_linked[key][:objects] ||= []
-    @json_tl_linked[key][:partial] = opts[:partial]
-    # convert objects to an array (if not already an array)
-    @json_tl_linked[key][:objects] += [*objects]
+    @json_tl_linked[opts[:type]] ||= {}
+    @json_tl_linked[opts[:type]][:objects] ||= []
+    @json_tl_linked[opts[:type]][:partial] = opts[:partial]
+
+    # ensure linked objects are an array
+    @json_tl_linked[opts[:type]][:objects] += [*objects]
 
     @json_tl_links ||= {}
     tl_links = { type: opts[:type] }
