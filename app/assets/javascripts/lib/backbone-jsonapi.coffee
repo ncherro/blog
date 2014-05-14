@@ -4,7 +4,10 @@ define ['backbone'
 
   utils =
     parse: (response) ->
-      console.log 'parsing'
+      response
+
+    getMainCollection: (response) ->
+      response
 
   Backbone.JsonApiCollection = Backbone.Collection.extend
     parse: (response, options) ->
