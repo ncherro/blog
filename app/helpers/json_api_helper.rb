@@ -27,7 +27,11 @@ module JsonApiHelper
   # individual resources
   def json_add_linked(key, objects, opts = {}, &block)
     link_key = key.split('.').last
-    opts = { partial: nil, type: link_key, href: nil }.merge(opts)
+    opts = {
+      partial: nil,
+      type: link_key,
+      href: nil
+    }.merge(opts)
     @json_tl_linked ||= {}
     @json_tl_linked[opts[:type]] ||= {}
     @json_tl_linked[opts[:type]][:objects] ||= []

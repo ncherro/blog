@@ -24,6 +24,7 @@ json_add_linked(
 json_add_linked(
   'posts.author',
   post.user,
+  href: user_path('{posts.author}'),
   partial: 'users/user',
   type: 'users',
   &:id

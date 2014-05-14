@@ -7,6 +7,7 @@ Blog::Application.routes.draw do
   end
 
   resources :tags, only: :show
+  resources :users, only: :show
 
   root to: 'home#index'
 
