@@ -2,9 +2,7 @@ define ['underscore'], (_) ->
 
   class JsonApiParser
 
-    mainCollection: null
-
-    constructor: (@response) ->
+    constructor: (@response, @mainCollection) ->
 
     setHref: (item, collection, href) ->
       pattern = new RegExp("{#{collection}\\..*}")
@@ -15,9 +13,6 @@ define ['underscore'], (_) ->
       sp = key.split('.')
       collection = sp[0]
       relatedKey = sp[1]
-
-      # NOTE: this assumes there is only 1 collection (there should be, right?)
-      @mainCollection ?= collection
 
       # loop through the collection and add the related item / items
       linkedKey = obj.type || relatedKey
@@ -36,7 +31,8 @@ define ['underscore'], (_) ->
           if obj.href
             @setHref item[relatedKey], collection, obj.href
         item._alreadyJSONAPIParsed = true
-        # delete item.links # NOTE: this breaks things - why?
+        # NOTE: why does this break things?
+        # delete item.links
 
     parse: ->
       for key, obj of @response.links

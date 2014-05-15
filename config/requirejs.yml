@@ -5,7 +5,6 @@ paths:
   showdown: 'lib/showdown.min'
   backbone: 'lib/backbone-min'
   'backbone.relational': 'lib/backbone-relational'
-  'backbone.jsonapi': 'lib/backbone-jsonapi'
   underscore: 'lib/underscore-min'
   blog: 'blog'
 

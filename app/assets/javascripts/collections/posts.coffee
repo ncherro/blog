@@ -1,6 +1,7 @@
 define ['backbone'
   'models/post'
-  'lib/jsonapi-parser'], (Backbone
+  'lib/jsonapi-parser'
+  'backbone.relational'], (Backbone
   PostModel
   JsonApiParser) ->
 
@@ -10,8 +11,16 @@ define ['backbone'
 
     url: '/posts'
 
+    # instance vars used for pagination
+    current_page: 1
+    total_pages: 1
+    total_count: 1
+
     comparator: (post) ->
       -post.get('created_at')
 
     parse: (response, options) ->
-      new JsonApiParser(response).parsedForCollection()
+      @current_page = response.meta.current_page
+      @total_pages = response.meta.total_pages
+      @total_count = response.meta.total_count
+      new JsonApiParser(response, 'posts').parsedForCollection()

@@ -14,8 +14,8 @@ module JsonApiHelper
     nil
   end
 
-  # caches linked objects into @json_tl_linked, to be printed into the top-level
-  # `linked` json object
+  # caches linked objects into @json_tl_linked, to be printed into the
+  # top-level `linked` json object
   #
   # ==== Attributes
   #
@@ -94,6 +94,11 @@ module JsonApiHelper
   # * +json+ - references to the jbuilder json object
   # * +reset+ - boolean (defaults to true) resets the cache after rendering
   def json_print_linked(json, reset = true)
+    json_print_tl_linked(json, reset)
+    json_print_tl_links(json, reset)
+  end
+
+  def json_print_tl_linked(json, reset = true)
     if @json_tl_linked && @json_tl_linked.any?
       json.linked do
         @json_tl_linked.each do |key, opts|
@@ -111,6 +116,9 @@ module JsonApiHelper
       end
       @json_tl_linked = {} if reset
     end
+  end
+
+  def json_print_tl_links(json, reset = true)
     if @json_tl_links && @json_tl_links.any?
       json.links do
         @json_tl_links.each do |key, opts|

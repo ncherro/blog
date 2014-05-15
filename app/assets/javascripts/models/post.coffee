@@ -6,9 +6,19 @@ define ['backbone'
   CommentsCollection
   JsonApiParser) ->
 
-  class PostModel extends Backbone.Model
+  class PostModel extends Backbone.RelationalModel
 
     urlRoot: '/posts'
 
+    relations: [
+      type: Backbone.HasMany
+      key: 'comments'
+      relatedModel: CommentModel
+      collectionType: CommentsCollection
+      reverseRelation:
+        key: 'post'
+        includeInJSON: 'id'
+    ]
+
     parse: (response, options) ->
-      new JsonApiParser(response).parsedForModel()
+      new JsonApiParser(response, 'posts').parsedForModel()
