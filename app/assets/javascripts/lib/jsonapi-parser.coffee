@@ -31,7 +31,7 @@ define ['underscore'], (_) ->
           if obj.href
             @setHref item[relatedKey], collection, obj.href
         item._alreadyJSONAPIParsed = true
-        # NOTE: why does this break things?
+        # NOTE: why does deleting this item's links break things?
         # delete item.links
 
     parse: ->

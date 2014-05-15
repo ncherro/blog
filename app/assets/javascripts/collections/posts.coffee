@@ -17,7 +17,7 @@ define ['backbone'
     total_count: 1
 
     comparator: (post) ->
-      -post.get('created_at')
+      -post.get('pub_date')
 
     parse: (response, options) ->
       @current_page = response.meta.current_page

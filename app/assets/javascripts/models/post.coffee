@@ -1,8 +1,10 @@
 define ['backbone'
   'models/comment'
+  'models/author'
   'collections/comments'
   'lib/jsonapi-parser'], (Backbone
   CommentModel
+  AuthorModel
   CommentsCollection
   JsonApiParser) ->
 
@@ -11,13 +13,20 @@ define ['backbone'
     urlRoot: '/posts'
 
     relations: [
-      type: Backbone.HasMany
-      key: 'comments'
-      relatedModel: CommentModel
-      collectionType: CommentsCollection
-      reverseRelation:
-        key: 'post'
-        includeInJSON: 'id'
+      {
+        type: Backbone.HasMany
+        key: 'comments'
+        relatedModel: CommentModel
+        collectionType: CommentsCollection
+        reverseRelation:
+          key: 'post'
+          includeInJSON: 'id'
+      }
+      {
+        type: Backbone.HasOne
+        key: 'author'
+        relatedModel: CommentModel
+      }
     ]
 
     parse: (response, options) ->

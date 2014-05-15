@@ -62,6 +62,8 @@ define ['react',
           D.div { dangerouslySetInnerHTML: {
             __html: converter.makeHtml(@props.post.get('copy'))
           }}
+          D.h3 {}, 'Author'
+          D.p {}, @props.post.get('author').get('email')
           CommentsWrap
             comments: @props.post.get('comments')
             comments_count: @props.post.get('comments_count')
