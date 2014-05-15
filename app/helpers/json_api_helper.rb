@@ -1,3 +1,5 @@
+require 'cgi'
+
 # helper for our JSON API
 module JsonApiHelper
   # caches meta keys / vals into @json_meta, to be printed into the top-level
@@ -42,7 +44,7 @@ module JsonApiHelper
 
     @json_tl_links ||= {}
     tl_links = { type: opts[:type] }
-    tl_links[:href] = opts[:href] if opts[:href]
+    tl_links[:href] = CGI.unescape(opts[:href]) if opts[:href]
     @json_tl_links[key] = tl_links
     if objects.respond_to?(:each)
       # store an array of keys
