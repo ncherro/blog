@@ -8,11 +8,7 @@ class Post < ActiveRecord::Base
 
   before_validation :set_slug_and_pubdate
 
-  class << self
-    def ordered
-      order('pub_date DESC')
-    end
-  end
+  scope :ordered, -> { order('pub_date DESC') }
 
   private
   def set_slug_and_pubdate
