@@ -1,9 +1,10 @@
 define ['backbone'
   'models/post'
-  'backbone.jsonapi'], (Backbone
-  PostModel) ->
+  'lib/jsonapi-parser'], (Backbone
+  PostModel
+  JsonApiParser) ->
 
-  class PostsCollection extends Backbone.JsonApiCollection
+  class PostsCollection extends Backbone.Collection
 
     model: PostModel
 
@@ -11,3 +12,6 @@ define ['backbone'
 
     comparator: (post) ->
       -post.get('created_at')
+
+    parse: (response, options) ->
+      new JsonApiParser(response).parsedForCollection()

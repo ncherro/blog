@@ -1,10 +1,10 @@
-define ['backbone'
-  'underscore'], (Backbone
-  _) ->
+define ['underscore'], (_) ->
 
-  utils =
-    response: null
+  class JsonApiParser
+
     mainCollection: null
+
+    constructor: (@response) ->
 
     setHref: (item, collection, href) ->
       pattern = new RegExp("{#{collection}\\..*}")
@@ -17,7 +17,7 @@ define ['backbone'
       relatedKey = sp[1]
 
       # NOTE: this assumes there is only 1 collection (there should be, right?)
-      @mainCollection = collection
+      @mainCollection ?= collection
 
       # loop through the collection and add the related item / items
       linkedKey = obj.type || relatedKey
@@ -38,33 +38,18 @@ define ['backbone'
         item._alreadyJSONAPIParsed = true
         # delete item.links # NOTE: this breaks things - why?
 
-    parse: (response) ->
-      console.log 'parsing response'
-      @response = response
+    parse: ->
       for key, obj of @response.links
         @processLinks(key, obj)
       @response
 
+    parsedForCollection: ->
+      return if @response == undefined
+      @parse()[@mainCollection]
 
-  Backbone.JsonApiCollection = Backbone.Collection.extend
-    parse: (response, options) ->
-      return if response == undefined
-      output = utils.parse(response)
-
-      console.log output[utils.mainCollection]
-
-      output[utils.mainCollection]
-
-  Backbone.JsonApiModel = Backbone.Model.extend
-    parse: (response, options) ->
-      return if response == undefined
-
-      if response._alreadyJSONAPIParsed
-        delete response._alreadyJSONAPIParsed
-        return response
-
-      console.log 'model parsing'
-      output = utils.parse(response)
-      output[utils.mainCollection][0]
-
-  Backbone
+    parsedForModel: ->
+      return if @response == undefined
+      if @response._alreadyJSONAPIParsed
+        delete @response._alreadyJSONAPIParsed
+        return @response
+      @parse()[@mainCollection][0]
