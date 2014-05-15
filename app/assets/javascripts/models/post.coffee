@@ -1,9 +1,11 @@
 define ['backbone'
+        'backbone.relational'
         'models/comment'
         'models/author'
         'collections/comments'
         'lib/jsonapi-parser'
-        'backbone.relational'], (Backbone
+        ], (Backbone
+        BackboneRelational
         CommentModel
         AuthorModel
         CommentsCollection
@@ -31,5 +33,4 @@ define ['backbone'
     ]
 
     parse: (response, options) ->
-      console.log "PARSING", response
       new JsonApiParser(response, 'posts').parsedForModel()

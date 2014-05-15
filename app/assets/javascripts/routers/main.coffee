@@ -37,9 +37,9 @@ define ['backbone'
       )
 
     posts_show: (id) ->
-      console.log "HI", Backbone.RelationalModel
-      post = new PostModel.findOrCreate(id: id)
       # render our UI component, passing in a model
+      # NOTE: this is breaking - not sure why
+      post = new PostModel.findOrCreate(id: id)
       @unmountComponents()
       React.renderComponent(
         Post(
