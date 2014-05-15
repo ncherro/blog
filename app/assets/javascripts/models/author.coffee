@@ -1,4 +1,4 @@
 define ['backbone'
-  'backbone.relational'], (Backbone) ->
+        'backbone.relational'], (Backbone) ->
 
   class AuthorModel extends Backbone.RelationalModel

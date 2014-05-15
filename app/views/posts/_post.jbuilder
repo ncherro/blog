@@ -14,9 +14,11 @@ json_add_linked(
   &:id
 )
 
+comments = post.comments
+comments = comments.limit(3) unless params[:action] == 'show' && params[:all_comments]
 json_add_linked(
   'posts.comments',
-  post.comments.limit(3),
+  comments,
   partial: 'comments/comment',
   &:id
 )

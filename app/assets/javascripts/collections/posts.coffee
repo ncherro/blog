@@ -9,7 +9,7 @@ define ['backbone'
 
     model: PostModel
 
-    url: '/posts'
+    url: '/posts.json'
 
     # instance vars used for pagination
     current_page: 1

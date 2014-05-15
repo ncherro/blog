@@ -1,16 +1,16 @@
-define ['backbone',
-  'react',
-  'ui/posts/wrap',
-  'ui/posts/show',
-  'ui/posts/form',
-  'collections/posts',
-  'models/post'], (Backbone,
-  React,
-  PostsWrap,
-  Post,
-  PostForm,
-  PostsCollection,
-  PostModel) ->
+define ['backbone'
+        'react'
+        'ui/posts/wrap'
+        'ui/posts/show'
+        'ui/posts/form'
+        'collections/posts'
+        'models/post'], (Backbone
+        React
+        PostsWrap
+        Post
+        PostForm
+        PostsCollection
+        PostModel) ->
 
   class MainRouter extends Backbone.Router
 
@@ -20,9 +20,7 @@ define ['backbone',
 
     # actions
     posts_index: ->
-
       posts = new PostsCollection
-
       # render our UI component, passing in a collection
       @unmountComponents()
       React.renderComponent(
@@ -38,18 +36,14 @@ define ['backbone',
         document.getElementById('content')
       )
 
-      # so we can manually edit in console
-      window.posts = posts
-
     posts_show: (id) ->
-
-      window.model = new PostModel.findOrCreate(id: id)
-
+      console.log "HI", Backbone.RelationalModel
+      post = new PostModel.findOrCreate(id: id)
       # render our UI component, passing in a model
       @unmountComponents()
       React.renderComponent(
         Post(
-          post: window.model
+          post: post
           standalone: true
         ),
         document.getElementById('content')

@@ -7,7 +7,7 @@ define ['backbone',
     model: CommentModel
 
     url: ->
-      "/posts/#{@post.id}/comments"
+      "/posts/#{@post.id}/comments.json"
 
     comparator: (comment) ->
       comment.get('created_at')

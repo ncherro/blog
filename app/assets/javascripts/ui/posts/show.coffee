@@ -23,7 +23,6 @@ define ['react',
   React.createClass
     # event handlers
     handleChanged: (model, options) ->
-      console.log 'post changed!'
       @setState
         loading: false
 
@@ -53,7 +52,7 @@ define ['react',
         attrs['id'] = 'posts-wrap' if @props.standalone
         D.div attrs, [
           D.h3 {}, [
-            D.a { href: @props.post.get('url'), onClick: (e) ->
+            D.a { href: @props.post.get('href'), onClick: (e) ->
               e.preventDefault()
               new MainRouter().navigate($(e.target).attr('href'), true)
             }, @props.post.get('title')

@@ -11,7 +11,7 @@ class PostsController < ApplicationController
   def show
     @post = Post.find(params[:id])
     respond_to do |format|
-      format.json
+      format.json { render layout: 'json_api' }
     end
   end
 
